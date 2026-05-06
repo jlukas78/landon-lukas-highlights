@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8" />
-<meta name="viewport" content="width=device-width,initial-scale=1" />
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover" />
 <title>Landon Lukas — Highlights</title>
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -205,6 +205,93 @@
     .stat-strip { grid-template-columns: repeat(2, 1fr); }
     .posters-grid { grid-template-columns: repeat(2, 1fr); }
   }
+
+  /* ── VIDEO & FULLSCREEN (iOS Safari) ── */
+  html, body { height: -webkit-fill-available; }
+
+  /* Fullscreen views use --vh so iOS Safari address bar doesn't clip content */
+  .fullscreen-view {
+    position: fixed;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%;
+    height: 100vh;
+    height: calc(var(--vh, 1vh) * 100);
+    z-index: 100;
+    background: #000;
+    overflow: hidden;
+  }
+
+  /* Video always fills its container, cover crop */
+  .fill-video {
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  /* Clip cards in hub grid */
+  .clip-card {
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+    background: var(--navy-1);
+    touch-action: manipulation;
+  }
+  /* Aspect ratio with iOS fallback */
+  .clip-card-aspect {
+    aspect-ratio: 16 / 10;
+    /* Fallback for iOS < 15 */
+  }
+  @supports not (aspect-ratio: 1) {
+    .clip-card-aspect { height: 0; padding-bottom: 62.5%; }
+    .clip-card-aspect > * { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  }
+
+  /* HUD bars inset for notch / home-indicator safe areas */
+  .cine-hud-top {
+    padding-top: max(20px, calc(env(safe-area-inset-top) + 12px));
+    padding-left:  max(28px, calc(env(safe-area-inset-left) + 14px));
+    padding-right: max(28px, calc(env(safe-area-inset-right) + 14px));
+  }
+  .cine-hud-bot {
+    padding-bottom: max(20px, calc(env(safe-area-inset-bottom) + 10px));
+    padding-left:   max(28px, calc(env(safe-area-inset-left) + 14px));
+    padding-right:  max(28px, calc(env(safe-area-inset-right) + 14px));
+  }
+  .cine-lower {
+    left: max(36px, calc(env(safe-area-inset-left) + 16px));
+    bottom: max(60px, calc(env(safe-area-inset-bottom) + 50px));
+  }
+  .cine-stat-tag {
+    right: max(36px, calc(env(safe-area-inset-right) + 16px));
+  }
+  .cine-brand-mark {
+    right:   max(36px, calc(env(safe-area-inset-right) + 16px));
+    bottom:  max(60px, calc(env(safe-area-inset-bottom) + 50px));
+  }
+
+  @media (max-width: 640px) {
+    .cine-hud-top {
+      padding-top: max(12px, calc(env(safe-area-inset-top) + 8px));
+      padding-left: max(14px, calc(env(safe-area-inset-left) + 10px));
+      padding-right: max(14px, calc(env(safe-area-inset-right) + 10px));
+    }
+    .cine-hud-bot {
+      padding-bottom: max(10px, calc(env(safe-area-inset-bottom) + 8px));
+      padding-left: max(14px, calc(env(safe-area-inset-left) + 10px));
+      padding-right: max(14px, calc(env(safe-area-inset-right) + 10px));
+    }
+    .cine-lower {
+      left: max(16px, calc(env(safe-area-inset-left) + 12px));
+      bottom: max(48px, calc(env(safe-area-inset-bottom) + 44px));
+    }
+    .cine-brand-mark {
+      right:  max(16px, calc(env(safe-area-inset-right) + 12px));
+      bottom: max(48px, calc(env(safe-area-inset-bottom) + 44px));
+    }
+  }
 </style>
 
 <script type="application/json" id="lando-data">
@@ -237,6 +324,16 @@
 <div class="arena-bg"></div>
 <div class="grain"></div>
 <div id="root"></div>
+
+<script>
+  // Fix iOS Safari: --vh is the true 1% of visible viewport height (no browser chrome)
+  function setVH() {
+    document.documentElement.style.setProperty('--vh', (window.innerHeight * 0.01) + 'px');
+  }
+  setVH();
+  window.addEventListener('resize', setVH);
+  window.addEventListener('orientationchange', function() { setTimeout(setVH, 150); });
+</script>
 
 <script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
 <script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
@@ -425,8 +522,8 @@ function ClipCard({ clip, idx, onPlay, hovered, setHovered }) {
     if (isHover) { v.currentTime=0; v.play().catch(()=>{}); } else { v.pause(); v.currentTime=0; }
   }, [isHover]);
   return (
-    <div onMouseEnter={()=>setHovered(idx)} onMouseLeave={()=>setHovered(null)} onClick={()=>onPlay(idx)} style={{position:'relative',cursor:'pointer',background:'var(--navy-1)',border:'1px solid rgba(255,255,255,0.06)',overflow:'hidden',aspectRatio:'16/10',transition:'transform 220ms ease, border-color 220ms',transform:isHover?'translateY(-4px)':'translateY(0)',borderColor:isHover?'var(--blue-bright)':'rgba(255,255,255,0.06)',touchAction:'manipulation'}}>
-      <video ref={videoRef} src={clip.src} muted playsInline preload="metadata" style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover',opacity:isHover?1:0.55,transition:'opacity 280ms',filter:isHover?'none':'saturate(0.8) contrast(1.05)'}}/>
+    <div onMouseEnter={()=>setHovered(idx)} onMouseLeave={()=>setHovered(null)} onClick={()=>onPlay(idx)} className="clip-card clip-card-aspect" style={{border:'1px solid rgba(255,255,255,0.06)',transition:'transform 220ms ease, border-color 220ms',transform:isHover?'translateY(-4px)':'translateY(0)',borderColor:isHover?'var(--blue-bright)':'rgba(255,255,255,0.06)'}}>
+      <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" preload="metadata" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',objectFit:'cover',opacity:isHover?1:0.55,transition:'opacity 280ms',filter:isHover?'none':'saturate(0.8) contrast(1.05)'}}/>
       <div style={{position:'absolute',inset:0,background:isHover?'linear-gradient(180deg,rgba(5,8,15,0)0%,rgba(5,8,15,0)50%,rgba(5,8,15,0.92)100%)':'linear-gradient(180deg,rgba(5,8,15,0.5)0%,rgba(16,35,65,0.4)50%,rgba(5,8,15,0.95)100%)',pointerEvents:'none'}}/>
       <div className="mono" style={{position:'absolute',top:14,left:14,fontSize:11,color:'var(--gold)',letterSpacing:'0.2em'}}>PLAY · {String(idx+1).padStart(2,'0')} / 07</div>
       <div className="h-cond" style={{position:'absolute',top:14,right:14,fontSize:11,fontWeight:700,letterSpacing:'0.18em',padding:'4px 10px',background:'var(--blue)',color:'#fff',clipPath:'polygon(8% 0,100% 0,92% 100%,0 100%)'}}>{clip.tag}</div>
@@ -677,7 +774,7 @@ function ClipStage({ videoRef, clip, phase, transition, idx, data }) {
   const transClass = phase==='transition'?`t-${transition}`:'';
   return (
     <div style={{position:'absolute',inset:0}} className={transClass}>
-      <video ref={videoRef} src={clip.src} muted playsInline style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
+      <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" className="fill-video"/>
       <div style={{position:'absolute',inset:0,pointerEvents:'none',background:'radial-gradient(75% 65% at 50% 50%,transparent 50%,rgba(0,0,0,0.55)100%)'}}/>
       <div className="cine-lower">
         <div className="mono" style={{fontSize:'clamp(8px,1.2vw,10px)',letterSpacing:'0.36em',color:'var(--gold)',marginBottom:8}}>▸ {clip.tag}</div>
@@ -751,7 +848,7 @@ function CinematicView({ data, onExit, audioMuted, onToggleAudio }) {
 
   const clip=data.clips[idx], total=data.clips.length;
   return (
-    <div style={{position:'fixed',inset:0,zIndex:100,background:'#000',overflow:'hidden',fontFamily:'Barlow,sans-serif'}}>
+    <div className="fullscreen-view" style={{fontFamily:'Barlow,sans-serif'}}>
       <CinematicHUD idx={idx} total={total} phase={phase} onExit={onExit} audioMuted={audioMuted} onToggleAudio={onToggleAudio}/>
       {phase==='intro'&&<IntroCard data={data}/>}
       {phase==='title'&&<TitleCard clip={clip} idx={idx} total={total}/>}
@@ -790,8 +887,8 @@ function SingleClipView({ data, startIdx, onExit, audioMuted, onToggleAudio }) {
   }, [onToggleAudio]);
 
   return (
-    <div style={{position:'fixed',inset:0,zIndex:100,background:'#000'}}>
-      <video ref={ref} src={clip.src} muted playsInline style={{position:'absolute',inset:0,width:'100%',height:'100%',objectFit:'cover'}}/>
+    <div className="fullscreen-view">
+      <video ref={ref} src={clip.src} muted playsInline webkit-playsinline="true" className="fill-video"/>
       <div style={{position:'absolute',inset:0,background:'radial-gradient(75% 65% at 50% 50%,transparent 50%,rgba(0,0,0,0.6)100%)',pointerEvents:'none'}}/>
 
       {/* HUD top */}
