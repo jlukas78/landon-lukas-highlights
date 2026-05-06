@@ -1,0 +1,1271 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>Landon Lukas — Highlights</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:wght@400;500;600;700;800;900&family=Barlow:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --navy-0: #05080f;
+    --navy-1: #0a1424;
+    --navy-2: #102341;
+    --navy-3: #163a72;
+    --blue: #1f5cd9;
+    --blue-bright: #2f7fff;
+    --gold: #f2b733;
+    --gold-deep: #c8881a;
+    --orange: #ff7a1a;
+    --bone: #ece6d6;
+    --white: #ffffff;
+    --ink: #c9d4e6;
+    --ink-dim: #6b7a92;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html, body { height: 100%; }
+  body {
+    background: var(--navy-0);
+    color: var(--white);
+    font-family: 'Barlow', system-ui, sans-serif;
+    overflow-x: hidden;
+    min-height: 100vh;
+  }
+  #root { min-height: 100vh; }
+
+  .h-display { font-family: 'Bebas Neue', 'Barlow Condensed', sans-serif; letter-spacing: 0.01em; }
+  .h-cond    { font-family: 'Barlow Condensed', sans-serif; }
+  .mono      { font-family: 'JetBrains Mono', monospace; }
+
+  .arena-bg {
+    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    background:
+      radial-gradient(80% 60% at 12% 0%, rgba(242,183,51,0.18), transparent 60%),
+      radial-gradient(60% 50% at 95% 30%, rgba(31,92,217,0.32), transparent 60%),
+      radial-gradient(70% 70% at 50% 110%, rgba(31,92,217,0.18), transparent 60%),
+      linear-gradient(180deg, #050913 0%, #07101f 40%, #050913 100%);
+  }
+  .arena-bg::after {
+    content: ""; position: absolute; inset: 0;
+    background-image:
+      repeating-linear-gradient(115deg, rgba(255,255,255,0.018) 0 2px, transparent 2px 7px),
+      radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.55) 100%);
+    mix-blend-mode: screen;
+  }
+  .grain {
+    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.06;
+    background-image:
+      radial-gradient(1px 1px at 20% 30%, #fff, transparent),
+      radial-gradient(1px 1px at 80% 70%, #fff, transparent),
+      radial-gradient(1px 1px at 40% 90%, #fff, transparent),
+      radial-gradient(1px 1px at 60% 10%, #fff, transparent);
+    background-size: 200px 200px, 250px 250px, 180px 180px, 220px 220px;
+  }
+
+  @keyframes slideUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes slideUpStat { from { opacity: 0; transform: translateY(-16px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes titleIn { from { opacity: 0; } to { opacity: 1; } }
+  @keyframes progressFill { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+  @keyframes cinePop { from { opacity: 0; transform: translateY(20px); filter: blur(6px); } to { opacity: 1; transform: translateY(0); filter: blur(0); } }
+  @keyframes fade { from { opacity: 0 } to { opacity: 1 } }
+  @keyframes tFlash { 0% { background: #000; opacity: 0; } 30% { background: #fff; opacity: 1; } 100% { background: #000; opacity: 0; } }
+  @keyframes tWipeR { from { clip-path: inset(0 0 0 0); } to { clip-path: inset(0 0 0 100%); } }
+  @keyframes tShutter { 0% { clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%); } 100% { clip-path: polygon(0 50%, 100% 50%, 100% 50%, 0 50%); } }
+
+  .cine-pop1 { animation: cinePop 700ms ease both; }
+  .cine-pop2 { animation: cinePop 900ms 200ms ease both; }
+  .cine-pop3 { animation: cinePop 900ms 500ms ease both; }
+  .cine-pop4 { animation: cinePop 900ms 800ms ease both; }
+  .cine-fade { animation: titleIn 400ms ease both; }
+
+  .t-flash::after { content: ""; position: absolute; inset: 0; background: #fff; animation: tFlash 600ms ease forwards; pointer-events: none; }
+  .t-wipe { animation: tWipeR 600ms ease forwards; }
+  .t-shutter { animation: tShutter 600ms ease forwards; }
+  .t-cut { animation: titleIn 100ms ease forwards reverse; }
+</style>
+
+<script type="application/json" id="lando-data">
+{
+  "name": "LANDON LUKAS",
+  "first": "LANDON",
+  "last": "LUKAS",
+  "number": 5,
+  "position": "GUARD",
+  "positionShort": "PG",
+  "height": "5'10\"",
+  "team": "THE ACADEMY",
+  "league": "UNDER ARMOUR GRIND",
+  "school": "SALINE HS",
+  "classOf": "C/O 2029",
+  "ageGroup": "15U",
+  "tagline": "WORK. GRIND. ELEVATE.",
+  "clips": [
+    { "id": "steal-ot",     "label": "STEAL IN OT",    "tag": "DEFENSE",    "src": "assets/clip-steal-ot.mp4",     "context": "OVERTIME · GAME ON THE LINE", "stat": "+TURNOVER FORCED" },
+    { "id": "and1",         "label": "AND-1",           "tag": "FINISH",     "src": "assets/clip-and1.mp4",         "context": "DRAWS CONTACT · FINISHES",   "stat": "2 PTS + FT" },
+    { "id": "3ball",        "label": "FROM DEEP",       "tag": "3 BALL",     "src": "assets/clip-3ball.mp4",        "context": "PULL-UP THREE",              "stat": "3 PTS" },
+    { "id": "steal-bucket", "label": "STEAL & BUCKET",  "tag": "TWO-WAY",    "src": "assets/clip-steal-bucket.mp4", "context": "DEFENSE INTO OFFENSE",       "stat": "STL → 2 PTS" },
+    { "id": "cut-bucket",   "label": "NICE CUT",        "tag": "OFF-BALL",   "src": "assets/clip-cut-bucket.mp4",   "context": "READS THE GAP",              "stat": "2 PTS" },
+    { "id": "assist",       "label": "DIME",            "tag": "PASSING",    "src": "assets/clip-assist.mp4",       "context": "PG VISION",                  "stat": "+1 ASSIST" },
+    { "id": "fts",          "label": "ICE COLD",        "tag": "FREE THROWS","src": "assets/clip-fts.mp4",          "context": "2-OF-2 FROM THE STRIPE",     "stat": "2 PTS" }
+  ],
+  "posters": [
+    "assets/poster-1.png",
+    "assets/poster-2.png",
+    "assets/poster-3.png",
+    "assets/poster-4.png"
+  ],
+  "kpis": [
+    { "k": "GUARD",     "v": "PG" },
+    { "k": "JERSEY",    "v": "#5" },
+    { "k": "HEIGHT",    "v": "5'10\"" },
+    { "k": "AGE GROUP", "v": "15U" },
+    { "k": "PROGRAM",   "v": "UA GRIND" },
+    { "k": "SCHOOL",    "v": "SALINE HS" },
+    { "k": "CLASS",     "v": "2029" },
+    { "k": "REEL",      "v": "07 PLAYS" }
+  ]
+}
+</script>
+</head>
+<body>
+<div class="arena-bg"></div>
+<div class="grain"></div>
+<div id="root"></div>
+
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel">
+
+// ═══════════════════════════════════════════════════════════
+// TWEAKS PANEL
+// ═══════════════════════════════════════════════════════════
+
+const __TWEAKS_STYLE = `
+  .twk-panel{position:fixed;right:16px;bottom:16px;z-index:2147483646;width:280px;
+    max-height:calc(100vh - 32px);display:flex;flex-direction:column;
+    transform:scale(var(--dc-inv-zoom,1));transform-origin:bottom right;
+    background:rgba(250,249,247,.78);color:#29261b;
+    -webkit-backdrop-filter:blur(24px) saturate(160%);backdrop-filter:blur(24px) saturate(160%);
+    border:.5px solid rgba(255,255,255,.6);border-radius:14px;
+    box-shadow:0 1px 0 rgba(255,255,255,.5) inset,0 12px 40px rgba(0,0,0,.18);
+    font:11.5px/1.4 ui-sans-serif,system-ui,-apple-system,sans-serif;overflow:hidden}
+  .twk-hd{display:flex;align-items:center;justify-content:space-between;
+    padding:10px 8px 10px 14px;cursor:move;user-select:none}
+  .twk-hd b{font-size:12px;font-weight:600;letter-spacing:.01em}
+  .twk-x{appearance:none;border:0;background:transparent;color:rgba(41,38,27,.55);
+    width:22px;height:22px;border-radius:6px;cursor:default;font-size:13px;line-height:1}
+  .twk-x:hover{background:rgba(0,0,0,.06);color:#29261b}
+  .twk-body{padding:2px 14px 14px;display:flex;flex-direction:column;gap:10px;
+    overflow-y:auto;overflow-x:hidden;min-height:0;
+    scrollbar-width:thin;scrollbar-color:rgba(0,0,0,.15) transparent}
+  .twk-body::-webkit-scrollbar{width:8px}
+  .twk-body::-webkit-scrollbar-track{background:transparent;margin:2px}
+  .twk-body::-webkit-scrollbar-thumb{background:rgba(0,0,0,.15);border-radius:4px;
+    border:2px solid transparent;background-clip:content-box}
+  .twk-body::-webkit-scrollbar-thumb:hover{background:rgba(0,0,0,.25);
+    border:2px solid transparent;background-clip:content-box}
+  .twk-row{display:flex;flex-direction:column;gap:5px}
+  .twk-row-h{flex-direction:row;align-items:center;justify-content:space-between;gap:10px}
+  .twk-lbl{display:flex;justify-content:space-between;align-items:baseline;
+    color:rgba(41,38,27,.72)}
+  .twk-lbl>span:first-child{font-weight:500}
+  .twk-val{color:rgba(41,38,27,.5);font-variant-numeric:tabular-nums}
+  .twk-sect{font-size:10px;font-weight:600;letter-spacing:.06em;text-transform:uppercase;
+    color:rgba(41,38,27,.45);padding:10px 0 0}
+  .twk-sect:first-child{padding-top:0}
+  .twk-field{appearance:none;width:100%;height:26px;padding:0 8px;
+    border:.5px solid rgba(0,0,0,.1);border-radius:7px;
+    background:rgba(255,255,255,.6);color:inherit;font:inherit;outline:none}
+  .twk-field:focus{border-color:rgba(0,0,0,.25);background:rgba(255,255,255,.85)}
+  select.twk-field{padding-right:22px;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'><path fill='rgba(0,0,0,.5)' d='M0 0h10L5 6z'/></svg>");
+    background-repeat:no-repeat;background-position:right 8px center}
+  .twk-slider{appearance:none;-webkit-appearance:none;width:100%;height:4px;margin:6px 0;
+    border-radius:999px;background:rgba(0,0,0,.12);outline:none}
+  .twk-slider::-webkit-slider-thumb{-webkit-appearance:none;appearance:none;
+    width:14px;height:14px;border-radius:50%;background:#fff;
+    border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-slider::-moz-range-thumb{width:14px;height:14px;border-radius:50%;
+    background:#fff;border:.5px solid rgba(0,0,0,.12);box-shadow:0 1px 3px rgba(0,0,0,.2);cursor:default}
+  .twk-seg{position:relative;display:flex;padding:2px;border-radius:8px;
+    background:rgba(0,0,0,.06);user-select:none}
+  .twk-seg-thumb{position:absolute;top:2px;bottom:2px;border-radius:6px;
+    background:rgba(255,255,255,.9);box-shadow:0 1px 2px rgba(0,0,0,.12);
+    transition:left .15s cubic-bezier(.3,.7,.4,1),width .15s}
+  .twk-seg.dragging .twk-seg-thumb{transition:none}
+  .twk-seg button{appearance:none;position:relative;z-index:1;flex:1;border:0;
+    background:transparent;color:inherit;font:inherit;font-weight:500;min-height:22px;
+    border-radius:6px;cursor:default;padding:4px 6px;line-height:1.2;overflow-wrap:anywhere}
+  .twk-toggle{position:relative;width:32px;height:18px;border:0;border-radius:999px;
+    background:rgba(0,0,0,.15);transition:background .15s;cursor:default;padding:0}
+  .twk-toggle[data-on="1"]{background:#34c759}
+  .twk-toggle i{position:absolute;top:2px;left:2px;width:14px;height:14px;border-radius:50%;
+    background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+  .twk-toggle[data-on="1"] i{transform:translateX(14px)}
+`;
+
+function useTweaks(defaults) {
+  const [values, setValues] = React.useState(defaults);
+  const setTweak = React.useCallback((keyOrEdits, val) => {
+    const edits = typeof keyOrEdits === 'object' && keyOrEdits !== null
+      ? keyOrEdits : { [keyOrEdits]: val };
+    setValues((prev) => ({ ...prev, ...edits }));
+    try { window.parent.postMessage({ type: '__edit_mode_set_keys', edits }, '*'); } catch(e) {}
+  }, []);
+  return [values, setTweak];
+}
+
+function TweaksPanel({ title = 'Tweaks', children }) {
+  const [open, setOpen] = React.useState(false);
+  const dragRef = React.useRef(null);
+  const offsetRef = React.useRef({ x: 16, y: 16 });
+  const PAD = 16;
+
+  const clampToViewport = React.useCallback(() => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const w = panel.offsetWidth, h = panel.offsetHeight;
+    const maxRight = Math.max(PAD, window.innerWidth - w - PAD);
+    const maxBottom = Math.max(PAD, window.innerHeight - h - PAD);
+    offsetRef.current = {
+      x: Math.min(maxRight, Math.max(PAD, offsetRef.current.x)),
+      y: Math.min(maxBottom, Math.max(PAD, offsetRef.current.y)),
+    };
+    panel.style.right = offsetRef.current.x + 'px';
+    panel.style.bottom = offsetRef.current.y + 'px';
+  }, []);
+
+  React.useEffect(() => {
+    if (!open) return;
+    clampToViewport();
+    const ro = typeof ResizeObserver !== 'undefined' ? new ResizeObserver(clampToViewport) : null;
+    if (ro) { ro.observe(document.documentElement); return () => ro.disconnect(); }
+    window.addEventListener('resize', clampToViewport);
+    return () => window.removeEventListener('resize', clampToViewport);
+  }, [open, clampToViewport]);
+
+  React.useEffect(() => {
+    const onMsg = (e) => {
+      const t = e?.data?.type;
+      if (t === '__activate_edit_mode') setOpen(true);
+      else if (t === '__deactivate_edit_mode') setOpen(false);
+    };
+    window.addEventListener('message', onMsg);
+    try { window.parent.postMessage({ type: '__edit_mode_available' }, '*'); } catch(e) {}
+    return () => window.removeEventListener('message', onMsg);
+  }, []);
+
+  const dismiss = () => {
+    setOpen(false);
+    try { window.parent.postMessage({ type: '__edit_mode_dismissed' }, '*'); } catch(e) {}
+  };
+
+  const onDragStart = (e) => {
+    const panel = dragRef.current;
+    if (!panel) return;
+    const r = panel.getBoundingClientRect();
+    const sx = e.clientX, sy = e.clientY;
+    const startRight = window.innerWidth - r.right;
+    const startBottom = window.innerHeight - r.bottom;
+    const move = (ev) => {
+      offsetRef.current = { x: startRight - (ev.clientX - sx), y: startBottom - (ev.clientY - sy) };
+      clampToViewport();
+    };
+    const up = () => { window.removeEventListener('mousemove', move); window.removeEventListener('mouseup', up); };
+    window.addEventListener('mousemove', move);
+    window.addEventListener('mouseup', up);
+  };
+
+  if (!open) return null;
+  return (
+    <>
+      <style>{__TWEAKS_STYLE}</style>
+      <div ref={dragRef} className="twk-panel" style={{ right: offsetRef.current.x, bottom: offsetRef.current.y }}>
+        <div className="twk-hd" onMouseDown={onDragStart}>
+          <b>{title}</b>
+          <button className="twk-x" onMouseDown={(e) => e.stopPropagation()} onClick={dismiss}>✕</button>
+        </div>
+        <div className="twk-body">{children}</div>
+      </div>
+    </>
+  );
+}
+
+function TweakSection({ label, children }) {
+  return (<><div className="twk-sect">{label}</div>{children}</>);
+}
+
+function TweakRow({ label, value, children, inline = false }) {
+  return (
+    <div className={inline ? 'twk-row twk-row-h' : 'twk-row'}>
+      <div className="twk-lbl">
+        <span>{label}</span>
+        {value != null && <span className="twk-val">{value}</span>}
+      </div>
+      {children}
+    </div>
+  );
+}
+
+function TweakRadio({ label, value, options, onChange }) {
+  const trackRef = React.useRef(null);
+  const [dragging, setDragging] = React.useState(false);
+  const valueRef = React.useRef(value);
+  valueRef.current = value;
+
+  const labelLen = (o) => String(typeof o === 'object' ? o.label : o).length;
+  const maxLen = options.reduce((m, o) => Math.max(m, labelLen(o)), 0);
+  const fitsAsSegments = maxLen <= ({ 2: 16, 3: 10 }[options.length] ?? 0);
+
+  if (!fitsAsSegments) {
+    const resolve = (s) => {
+      const m = options.find((o) => String(typeof o === 'object' ? o.value : o) === s);
+      return m === undefined ? s : typeof m === 'object' ? m.value : m;
+    };
+    return (
+      <TweakRow label={label}>
+        <select className="twk-field" value={value} onChange={(e) => onChange(resolve(e.target.value))}>
+          {options.map((o) => {
+            const v = typeof o === 'object' ? o.value : o;
+            const l = typeof o === 'object' ? o.label : o;
+            return <option key={v} value={v}>{l}</option>;
+          })}
+        </select>
+      </TweakRow>
+    );
+  }
+
+  const opts = options.map((o) => (typeof o === 'object' ? o : { value: o, label: o }));
+  const idx = Math.max(0, opts.findIndex((o) => o.value === value));
+  const n = opts.length;
+
+  const segAt = (clientX) => {
+    const r = trackRef.current.getBoundingClientRect();
+    const inner = r.width - 4;
+    const i = Math.floor(((clientX - r.left - 2) / inner) * n);
+    return opts[Math.max(0, Math.min(n - 1, i))].value;
+  };
+
+  const onPointerDown = (e) => {
+    setDragging(true);
+    const v0 = segAt(e.clientX);
+    if (v0 !== valueRef.current) onChange(v0);
+    const move = (ev) => { if (!trackRef.current) return; const v = segAt(ev.clientX); if (v !== valueRef.current) onChange(v); };
+    const up = () => { setDragging(false); window.removeEventListener('pointermove', move); window.removeEventListener('pointerup', up); };
+    window.addEventListener('pointermove', move);
+    window.addEventListener('pointerup', up);
+  };
+
+  return (
+    <TweakRow label={label}>
+      <div ref={trackRef} role="radiogroup" onPointerDown={onPointerDown}
+           className={dragging ? 'twk-seg dragging' : 'twk-seg'}>
+        <div className="twk-seg-thumb"
+             style={{ left: `calc(2px + ${idx} * (100% - 4px) / ${n})`, width: `calc((100% - 4px) / ${n})` }} />
+        {opts.map((o) => (
+          <button key={o.value} type="button" role="radio" aria-checked={o.value === value}>{o.label}</button>
+        ))}
+      </div>
+    </TweakRow>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// BRAND ATOMS
+// ═══════════════════════════════════════════════════════════
+
+const THEMES = {
+  navy: {
+    bg0: "#05080f", bg1: "#0a1424", bg2: "#102341",
+    blue: "#1f5cd9", blueBright: "#2f7fff",
+    accent: "#f2b733", accentDeep: "#c8881a",
+    bone: "#ece6d6", name: "NAVY / GOLD"
+  },
+  midnight: {
+    bg0: "#06070a", bg1: "#0d0f17", bg2: "#1a1d2e",
+    blue: "#3a3aff", blueBright: "#6a6aff",
+    accent: "#e2e2e2", accentDeep: "#9aa0b5",
+    bone: "#f4f4f8", name: "MIDNIGHT / SILVER"
+  },
+  blacktop: {
+    bg0: "#080604", bg1: "#141008", bg2: "#241a08",
+    blue: "#ff7a1a", blueBright: "#ffa14a",
+    accent: "#f2b733", accentDeep: "#a8721a",
+    bone: "#f7eedd", name: "BLACKTOP / GOLD"
+  },
+  ice: {
+    bg0: "#04080d", bg1: "#0a1622", bg2: "#13314a",
+    blue: "#3aa7ff", blueBright: "#7fc7ff",
+    accent: "#cfe7ff", accentDeep: "#7aa6c7",
+    bone: "#eaf3ff", name: "ICE / CYAN"
+  }
+};
+
+function applyTheme(t) {
+  const r = document.documentElement.style;
+  r.setProperty('--navy-0', t.bg0);
+  r.setProperty('--navy-1', t.bg1);
+  r.setProperty('--navy-2', t.bg2);
+  r.setProperty('--blue', t.blue);
+  r.setProperty('--blue-bright', t.blueBright);
+  r.setProperty('--gold', t.accent);
+  r.setProperty('--gold-deep', t.accentDeep);
+  r.setProperty('--bone', t.bone);
+}
+
+function BrushStroke({ color = "#1f5cd9", width = 320, height = 30, seed = 1, style = {} }) {
+  const bands = [];
+  const N = 14;
+  for (let i = 0; i < N; i++) {
+    const y = (i / (N - 1)) * height;
+    const wobble = Math.sin(i * 1.7 + seed) * 6;
+    const x1 = 4 + Math.abs(Math.sin(i + seed)) * 8;
+    const x2 = width - 4 - Math.abs(Math.cos(i * 0.6 + seed)) * 14;
+    const o = 0.25 + 0.75 * (1 - Math.abs(i - N / 2) / (N / 2));
+    bands.push(<line key={i} x1={x1} x2={x2} y1={y} y2={y + wobble * 0.3} stroke={color} strokeOpacity={o} strokeWidth={1.4} strokeLinecap="round" />);
+  }
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} style={{ display: 'block', ...style }}>
+      <defs>
+        <filter id={`b${seed}`}>
+          <feTurbulence baseFrequency="0.9" numOctaves="2" seed={seed} />
+          <feDisplacementMap in="SourceGraphic" scale="3" />
+        </filter>
+      </defs>
+      <g filter={`url(#b${seed})`}>{bands}</g>
+    </svg>
+  );
+}
+
+function BrushSwoosh({ color = "#1f5cd9", width = 520, height = 70, seed = 3, style = {} }) {
+  return (
+    <svg viewBox={`0 0 ${width} ${height}`} width={width} height={height} style={{ display: 'block', ...style }} preserveAspectRatio="none">
+      <defs>
+        <filter id={`bs${seed}`}>
+          <feTurbulence baseFrequency="0.65" numOctaves="2" seed={seed} />
+          <feDisplacementMap in="SourceGraphic" scale="4" />
+        </filter>
+        <linearGradient id={`bsg${seed}`} x1="0" x2="1">
+          <stop offset="0" stopColor={color} stopOpacity="0.9" />
+          <stop offset="0.7" stopColor={color} stopOpacity="1" />
+          <stop offset="1" stopColor={color} stopOpacity="0.55" />
+        </linearGradient>
+      </defs>
+      <g filter={`url(#bs${seed})`}>
+        <path d={`M 4 ${height*0.75} Q ${width*0.4} ${height*0.1}, ${width*0.7} ${height*0.55} T ${width-6} ${height*0.45}`}
+              fill="none" stroke={`url(#bsg${seed})`} strokeWidth={height*0.55} strokeLinecap="round" />
+      </g>
+    </svg>
+  );
+}
+
+function Emblem({ size = 56, accent = "var(--gold)", deep = "var(--gold-deep)" }) {
+  return (
+    <svg viewBox="0 0 100 100" width={size} height={size} style={{ display: 'block' }}>
+      <defs>
+        <radialGradient id="em-g" cx="0.4" cy="0.35">
+          <stop offset="0" stopColor="#ffd97a" />
+          <stop offset="0.55" stopColor={accent} />
+          <stop offset="1" stopColor={deep} />
+        </radialGradient>
+      </defs>
+      <circle cx="50" cy="50" r="46" fill="url(#em-g)" stroke="#3a2a05" strokeWidth="2" />
+      <circle cx="50" cy="50" r="38" fill="none" stroke="#fff7d6" strokeOpacity="0.7" strokeWidth="1.2" />
+      <g fill="#1a1207">
+        <rect x="28" y="28" width="6" height="40" />
+        <rect x="28" y="62" width="22" height="6" />
+        <rect x="56" y="28" width="6" height="40" />
+        <rect x="56" y="62" width="20" height="6" />
+      </g>
+      <path d="M 14 50 Q 50 35, 86 50" fill="none" stroke="#3a2a05" strokeWidth="1" strokeOpacity="0.4" />
+    </svg>
+  );
+}
+
+function NameLockup({ first = "LANDON", last = "LUKAS", scale = 1, dark = false }) {
+  const fs1 = 96 * scale, fs2 = 110 * scale;
+  return (
+    <div style={{ position: 'relative', display: 'inline-block', lineHeight: 0.85 }}>
+      <div className="h-display" style={{
+        fontSize: fs1, color: dark ? '#0a0a0a' : '#f4efe1',
+        letterSpacing: '0.02em',
+        textShadow: dark ? 'none' : '0 4px 18px rgba(0,0,0,0.55)',
+        transform: 'skewX(-6deg)', transformOrigin: 'left bottom',
+      }}>{first}</div>
+      <div style={{ position: 'relative', marginTop: 4 * scale }}>
+        <div className="h-display" style={{
+          position: 'relative', zIndex: 2,
+          fontSize: fs2, color: 'var(--blue-bright)',
+          letterSpacing: '0.01em', fontStyle: 'italic',
+          transform: 'skewX(-10deg)', transformOrigin: 'left bottom',
+          textShadow: '0 6px 24px rgba(31,92,217,0.55)',
+        }}>{last}</div>
+        <BrushStroke color="var(--bone)" width={fs2 * 4.2} height={14 * scale} seed={4}
+          style={{ position: 'absolute', left: -4, bottom: -8 * scale, opacity: 0.85 }} />
+      </div>
+    </div>
+  );
+}
+
+function GhostNumber({ n = 5, size = 360, color = "rgba(255,255,255,0.08)", strokeColor = "rgba(255,255,255,0.22)" }) {
+  return (
+    <div className="h-display" style={{
+      fontSize: size, lineHeight: 0.8,
+      color, WebkitTextStroke: `2px ${strokeColor}`,
+      letterSpacing: 0,
+      pointerEvents: 'none', userSelect: 'none',
+    }}>{n}</div>
+  );
+}
+
+function BrushField({ opacity = 0.45 }) {
+  const lines = [];
+  for (let i = 0; i < 22; i++) {
+    const top = `${(i * 7) - 20}%`;
+    const left = `${-20 + (i % 3) * 8}%`;
+    const len = 50 + (i % 4) * 16;
+    const col = i % 5 === 0 ? 'var(--bone)' : 'var(--blue)';
+    const op = (i % 5 === 0 ? 0.5 : 0.35) * opacity;
+    lines.push(
+      <div key={i} style={{
+        position: 'absolute', top, left, width: `${len}%`, height: 2 + (i % 3),
+        background: col, opacity: op, transform: 'rotate(-22deg)', filter: 'blur(0.4px)',
+      }} />
+    );
+  }
+  return <div style={{ position: 'absolute', inset: 0, overflow: 'hidden', pointerEvents: 'none' }}>{lines}</div>;
+}
+
+// ═══════════════════════════════════════════════════════════
+// HUB VIEW
+// ═══════════════════════════════════════════════════════════
+
+function ClipCard({ clip, idx, onPlay, hovered, setHovered }) {
+  const videoRef = React.useRef(null);
+  const isHover = hovered === idx;
+
+  React.useEffect(() => {
+    const v = videoRef.current;
+    if (!v) return;
+    if (isHover) { v.currentTime = 0; v.play().catch(() => {}); }
+    else { v.pause(); v.currentTime = 0; }
+  }, [isHover]);
+
+  return (
+    <div
+      onMouseEnter={() => setHovered(idx)}
+      onMouseLeave={() => setHovered(null)}
+      onClick={() => onPlay(idx)}
+      style={{
+        position: 'relative', cursor: 'pointer',
+        background: 'var(--navy-1)',
+        border: '1px solid rgba(255,255,255,0.06)',
+        overflow: 'hidden',
+        aspectRatio: '16/10',
+        transition: 'transform 220ms ease, border-color 220ms',
+        transform: isHover ? 'translateY(-4px)' : 'translateY(0)',
+        borderColor: isHover ? 'var(--blue-bright)' : 'rgba(255,255,255,0.06)',
+      }}
+    >
+      <video ref={videoRef} src={clip.src} muted playsInline preload="metadata"
+        style={{
+          position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover',
+          opacity: isHover ? 1 : 0.55,
+          transition: 'opacity 280ms',
+          filter: isHover ? 'none' : 'saturate(0.8) contrast(1.05)',
+        }}
+      />
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: isHover
+          ? 'linear-gradient(180deg, rgba(5,8,15,0.0) 0%, rgba(5,8,15,0.0) 50%, rgba(5,8,15,0.92) 100%)'
+          : 'linear-gradient(180deg, rgba(5,8,15,0.5) 0%, rgba(16,35,65,0.4) 50%, rgba(5,8,15,0.95) 100%)',
+        pointerEvents: 'none',
+      }} />
+      <div className="mono" style={{ position: 'absolute', top: 14, left: 14, fontSize: 11, color: 'var(--gold)', letterSpacing: '0.2em' }}>
+        PLAY · {String(idx + 1).padStart(2, '0')} / 07
+      </div>
+      <div className="h-cond" style={{
+        position: 'absolute', top: 14, right: 14,
+        fontSize: 11, fontWeight: 700, letterSpacing: '0.18em',
+        padding: '4px 10px',
+        background: 'var(--blue)', color: '#fff',
+        clipPath: 'polygon(8% 0, 100% 0, 92% 100%, 0 100%)',
+      }}>{clip.tag}</div>
+      <div style={{ position: 'absolute', left: 16, right: 16, bottom: 14 }}>
+        <div className="h-display" style={{ fontSize: 30, lineHeight: 1, color: '#fff', letterSpacing: '0.02em', textShadow: '0 2px 10px rgba(0,0,0,0.6)' }}>{clip.label}</div>
+        <div className="mono" style={{ marginTop: 4, fontSize: 10, color: 'var(--ink)', letterSpacing: '0.18em' }}>{clip.context}</div>
+      </div>
+      <div style={{
+        position: 'absolute', right: 16, bottom: 56,
+        width: 38, height: 38, borderRadius: '50%',
+        background: 'var(--gold)', display: 'grid', placeItems: 'center',
+        opacity: isHover ? 1 : 0,
+        transform: isHover ? 'scale(1)' : 'scale(0.7)',
+        transition: 'all 240ms',
+      }}>
+        <div style={{ width: 0, height: 0, borderLeft: '11px solid #0a0a0a', borderTop: '7px solid transparent', borderBottom: '7px solid transparent', marginLeft: 3 }} />
+      </div>
+    </div>
+  );
+}
+
+function PosterCard({ src, i, onClick }) {
+  return (
+    <div onClick={onClick} style={{
+      position: 'relative', cursor: 'pointer',
+      aspectRatio: '2/3', overflow: 'hidden',
+      background: 'var(--navy-1)',
+      border: '1px solid rgba(255,255,255,0.06)',
+      transition: 'transform 240ms ease, border-color 240ms',
+    }}
+    onMouseEnter={(e) => { e.currentTarget.style.transform = 'translateY(-4px)'; e.currentTarget.style.borderColor = 'var(--gold)'; }}
+    onMouseLeave={(e) => { e.currentTarget.style.transform = 'translateY(0)'; e.currentTarget.style.borderColor = 'rgba(255,255,255,0.06)'; }}
+    >
+      <img src={src} alt="" loading="lazy" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+      <div className="mono" style={{
+        position: 'absolute', top: 10, left: 10,
+        fontSize: 10, color: 'var(--gold)', letterSpacing: '0.2em',
+        background: 'rgba(5,8,15,0.65)', padding: '3px 8px',
+      }}>FRAME · 0{i + 1}</div>
+    </div>
+  );
+}
+
+function PosterLightbox({ src, onClose }) {
+  if (!src) return null;
+  return (
+    <div onClick={onClose} style={{
+      position: 'fixed', inset: 0, zIndex: 200,
+      background: 'rgba(2,4,8,0.92)',
+      display: 'grid', placeItems: 'center',
+      backdropFilter: 'blur(8px)',
+      animation: 'fade 200ms ease',
+    }}>
+      <img src={src} style={{ maxWidth: '90vw', maxHeight: '92vh', boxShadow: '0 20px 80px rgba(0,0,0,0.7)' }} alt="" />
+      <div className="mono" style={{ position: 'fixed', bottom: 24, color: 'var(--ink)', fontSize: 11, letterSpacing: '0.2em' }}>
+        CLICK ANYWHERE TO CLOSE · ESC
+      </div>
+    </div>
+  );
+}
+
+function HubView({ data, onPlayAll, onPlayClip, themeKey }) {
+  const [hovered, setHovered] = React.useState(null);
+  const [poster, setPoster] = React.useState(null);
+
+  React.useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') setPoster(null); };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, []);
+
+  return (
+    <div style={{ position: 'relative', zIndex: 2, padding: '40px clamp(20px, 4vw, 64px) 80px', maxWidth: 1600, margin: '0 auto' }}>
+
+      {/* HEADER */}
+      <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginBottom: 32 }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <Emblem size={44} />
+          <div>
+            <div className="mono" style={{ fontSize: 10, letterSpacing: '0.28em', color: 'var(--gold)' }}>LANDON LUKAS HIGHLIGHTS</div>
+            <div className="h-cond" style={{ fontSize: 14, fontWeight: 600, letterSpacing: '0.18em', color: 'var(--ink)' }}>VOL. 01 · GAME REEL</div>
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <div className="mono" style={{ fontSize: 11, color: 'var(--ink-dim)', letterSpacing: '0.2em' }}>2025–26 SEASON</div>
+          <div style={{ width: 1, height: 18, background: 'rgba(255,255,255,0.18)' }} />
+          <div className="mono" style={{ fontSize: 11, color: 'var(--ink)', letterSpacing: '0.2em' }}>{data.classOf}</div>
+        </div>
+      </header>
+
+      {/* HERO */}
+      <section style={{
+        position: 'relative', display: 'grid',
+        gridTemplateColumns: 'minmax(0, 1.25fr) minmax(0, 1fr)',
+        gap: 32, alignItems: 'stretch', marginBottom: 56, minHeight: 480,
+      }}>
+        <div style={{ position: 'relative', padding: '24px 0', overflow: 'visible' }}>
+          <BrushField opacity={0.5} />
+          <div style={{ position: 'absolute', right: -20, top: -24, opacity: 1, zIndex: 0 }}>
+            <GhostNumber n={data.number} size={420} />
+          </div>
+          <div style={{ position: 'relative', zIndex: 2, marginTop: 16 }}>
+            <div className="mono" style={{ fontSize: 11, letterSpacing: '0.32em', color: 'var(--gold)', marginBottom: 14 }}>
+              ▸ FEATURED ATHLETE — {data.ageGroup} · {data.league}
+            </div>
+            <NameLockup first={data.first} last={data.last} scale={1} />
+          </div>
+          <div style={{ position: 'relative', zIndex: 2, marginTop: 30, display: 'flex', alignItems: 'flex-end', gap: 18 }}>
+            <div className="h-display" style={{ fontSize: 96, lineHeight: 0.8, color: 'var(--bone)', letterSpacing: 0 }}>
+              #{data.number}
+            </div>
+            <div style={{ paddingBottom: 8 }}>
+              <div className="h-cond" style={{ fontSize: 22, fontWeight: 700, letterSpacing: '0.32em', color: '#fff' }}>{data.position}</div>
+              <div style={{ width: 64, height: 3, background: 'var(--blue-bright)', marginTop: 6 }} />
+              <div className="mono" style={{ fontSize: 11, marginTop: 8, color: 'var(--ink)', letterSpacing: '0.2em' }}>
+                {data.height} · {data.school}
+              </div>
+            </div>
+          </div>
+          <div style={{ position: 'relative', zIndex: 2, marginTop: 36, display: 'flex', gap: 14, flexWrap: 'wrap' }}>
+            <button onClick={onPlayAll} style={{
+              border: 'none', padding: '16px 28px',
+              background: 'var(--gold)', color: '#0a0a0a',
+              cursor: 'pointer',
+              clipPath: 'polygon(0 0, 100% 0, 96% 100%, 4% 100%)',
+              display: 'flex', alignItems: 'center', gap: 12,
+              fontFamily: 'Bebas Neue, sans-serif', fontSize: 22, letterSpacing: '0.16em',
+            }}>
+              <span style={{ width: 0, height: 0, borderLeft: '12px solid #0a0a0a', borderTop: '8px solid transparent', borderBottom: '8px solid transparent' }} />
+              PLAY ALL · 07 CLIPS
+            </button>
+            <button onClick={() => setPoster(data.posters[0])} style={{
+              border: '1px solid rgba(255,255,255,0.2)',
+              padding: '16px 24px',
+              background: 'transparent', color: '#fff',
+              cursor: 'pointer',
+              fontFamily: 'Bebas Neue, sans-serif', fontSize: 20, letterSpacing: '0.18em',
+            }}>
+              VIEW POSTERS
+            </button>
+          </div>
+        </div>
+
+        <div style={{ position: 'relative', cursor: 'pointer' }} onClick={() => setPoster(data.posters[0])}>
+          <div style={{
+            position: 'absolute', inset: '-2% -2% -2% -2%',
+            background: 'linear-gradient(135deg, var(--blue) 0%, transparent 60%)',
+            opacity: 0.4, filter: 'blur(40px)',
+          }} />
+          <div style={{
+            position: 'relative', height: '100%', width: '100%',
+            border: '1px solid rgba(255,255,255,0.08)',
+            overflow: 'hidden', background: 'var(--navy-1)', minHeight: 480,
+          }}>
+            <img src={data.posters[0]} alt="" style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
+            <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(180deg, transparent 60%, rgba(5,8,15,0.85) 100%)' }} />
+            <div className="mono" style={{ position: 'absolute', bottom: 20, left: 20, fontSize: 11, color: 'var(--gold)', letterSpacing: '0.24em' }}>
+              KEY ART · {data.tagline}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* STAT STRIP */}
+      <section style={{
+        display: 'grid',
+        gridTemplateColumns: `repeat(${data.kpis.length}, 1fr)`,
+        gap: 0, marginBottom: 56,
+        borderLeft: '1px solid rgba(255,255,255,0.1)',
+        borderRight: '1px solid rgba(255,255,255,0.1)',
+      }}>
+        {data.kpis.map((kpi, i) => (
+          <div key={i} style={{
+            padding: '18px 14px',
+            borderTop: '1px solid rgba(255,255,255,0.1)',
+            borderBottom: '1px solid rgba(255,255,255,0.1)',
+            borderRight: i < data.kpis.length - 1 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+          }}>
+            <div className="mono" style={{ fontSize: 9, letterSpacing: '0.22em', color: 'var(--ink-dim)' }}>{kpi.k}</div>
+            <div className="h-display" style={{ fontSize: 28, color: 'var(--bone)', lineHeight: 1, marginTop: 4 }}>{kpi.v}</div>
+          </div>
+        ))}
+      </section>
+
+      {/* CLIPS GRID */}
+      <section style={{ marginBottom: 56 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 22 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div className="h-display" style={{ fontSize: 44, color: '#fff', letterSpacing: '0.02em' }}>THE PLAYS</div>
+            <div style={{ width: 60, height: 3, background: 'var(--blue-bright)' }} />
+          </div>
+          <div className="mono" style={{ fontSize: 11, color: 'var(--ink-dim)', letterSpacing: '0.2em' }}>HOVER TO PREVIEW · CLICK TO ISOLATE</div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fill, minmax(280px, 1fr))', gap: 14 }}>
+          {data.clips.map((c, i) => (
+            <ClipCard key={c.id} clip={c} idx={i} onPlay={onPlayClip} hovered={hovered} setHovered={setHovered} />
+          ))}
+        </div>
+      </section>
+
+      {/* POSTERS ROW */}
+      <section style={{ marginBottom: 40 }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', marginBottom: 22 }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+            <div className="h-display" style={{ fontSize: 44, color: '#fff', letterSpacing: '0.02em' }}>KEY ART</div>
+            <div style={{ width: 60, height: 3, background: 'var(--gold)' }} />
+          </div>
+          <div className="mono" style={{ fontSize: 11, color: 'var(--ink-dim)', letterSpacing: '0.2em' }}>04 POSTERS · TAP TO ENLARGE</div>
+        </div>
+        <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(220px, 1fr))', gap: 14 }}>
+          {data.posters.map((p, i) => (
+            <PosterCard key={i} src={p} i={i} onClick={() => setPoster(p)} />
+          ))}
+        </div>
+      </section>
+
+      {/* FOOTER */}
+      <footer style={{
+        marginTop: 64, paddingTop: 28,
+        borderTop: '1px solid rgba(255,255,255,0.08)',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center', flexWrap: 'wrap', gap: 16,
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
+          <Emblem size={36} />
+          <div>
+            <div className="h-cond" style={{ fontSize: 16, fontWeight: 700, letterSpacing: '0.22em', color: '#fff' }}>{data.team}</div>
+            <div className="mono" style={{ fontSize: 10, letterSpacing: '0.28em', color: 'var(--gold)' }}>{data.tagline}</div>
+          </div>
+        </div>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: '0.2em', color: 'var(--ink-dim)' }}>
+          REEL VOL.01 · BUILT FOR RECRUITERS · {data.classOf}
+        </div>
+      </footer>
+
+      <PosterLightbox src={poster} onClose={() => setPoster(null)} />
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// CINEMATIC VIEW
+// ═══════════════════════════════════════════════════════════
+
+const CLIP_MAX = 14;
+const TRANSITIONS = ['cut', 'wipe', 'flash', 'shutter', 'wipe', 'cut', 'flash'];
+
+function SpeakerIcon({ muted }) {
+  return (
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+      <path d="M3 9v6h4l5 4V5L7 9H3z" />
+      {!muted && <path d="M16 8c1.5 1 2.5 2.5 2.5 4s-1 3-2.5 4" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />}
+      {!muted && <path d="M19 5c2.5 1.6 4 4.2 4 7s-1.5 5.4-4 7" stroke="currentColor" strokeWidth="1.6" fill="none" strokeLinecap="round" />}
+      {muted && <path d="M16 8l6 8M22 8l-6 8" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" />}
+    </svg>
+  );
+}
+
+function CinematicHUD({ idx, total, phase, clip, data, onExit, audioMuted, onToggleAudio }) {
+  return (
+    <>
+      <div style={{
+        position: 'absolute', top: 0, left: 0, right: 0, zIndex: 30,
+        padding: '20px 28px',
+        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
+        pointerEvents: 'none',
+      }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <Emblem size={32} />
+          <div className="mono" style={{ fontSize: 10, letterSpacing: '0.3em', color: 'var(--gold)' }}>
+            REC ● LANDON LUKAS HIGHLIGHTS · VOL.01
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 12, alignItems: 'center' }}>
+          <div className="mono" style={{ fontSize: 11, color: '#fff', letterSpacing: '0.22em' }}>
+            {phase === 'intro' ? 'COLD OPEN' : phase === 'outro' ? 'OUTRO' : `${String(idx + 1).padStart(2, '0')} / ${String(total).padStart(2, '0')}`}
+          </div>
+          <button onClick={onToggleAudio} title={audioMuted ? 'Unmute soundtrack' : 'Mute soundtrack'} style={{
+            pointerEvents: 'auto',
+            background: audioMuted ? 'transparent' : 'var(--gold)',
+            color: audioMuted ? '#fff' : '#0a0a0a',
+            border: '1px solid ' + (audioMuted ? 'rgba(255,255,255,0.3)' : 'var(--gold)'),
+            padding: '6px 12px', cursor: 'pointer',
+            fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.2em', fontSize: 13,
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+          }}>
+            <SpeakerIcon muted={audioMuted} />
+            {audioMuted ? 'SOUND ON' : 'MUTE'}
+          </button>
+          <button onClick={onExit} style={{
+            pointerEvents: 'auto',
+            background: 'transparent', border: '1px solid rgba(255,255,255,0.3)',
+            color: '#fff', padding: '6px 12px', cursor: 'pointer',
+            fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.2em', fontSize: 13,
+          }}>EXIT ✕</button>
+        </div>
+      </div>
+
+      <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, zIndex: 30, padding: '0 28px 20px' }}>
+        <div style={{ display: 'flex', gap: 4 }}>
+          {Array.from({ length: total }).map((_, i) => (
+            <div key={i} style={{ flex: 1, height: 3, background: 'rgba(255,255,255,0.15)', overflow: 'hidden', position: 'relative' }}>
+              <div style={{
+                position: 'absolute', inset: 0,
+                background: i < idx || (i === idx && phase === 'transition') ? 'var(--gold)'
+                          : i === idx && phase === 'play' ? 'var(--blue-bright)' : 'transparent',
+                width: '100%',
+                animation: i === idx && phase === 'play' ? `progressFill ${CLIP_MAX}s linear forwards` : 'none',
+                transformOrigin: 'left',
+              }} />
+            </div>
+          ))}
+        </div>
+        <div style={{ display: 'flex', justifyContent: 'space-between', marginTop: 8 }}>
+          <div className="mono" style={{ fontSize: 9, color: 'var(--ink-dim)', letterSpacing: '0.24em' }}>ESC TO EXIT · → SKIP · M MUTE</div>
+          <div className="mono" style={{ fontSize: 9, color: 'var(--ink-dim)', letterSpacing: '0.24em' }}>SOUNDTRACK</div>
+        </div>
+      </div>
+    </>
+  );
+}
+
+function IntroCard({ data }) {
+  return (
+    <div className="cine-fade" style={{
+      position: 'absolute', inset: 0, display: 'grid', placeItems: 'center',
+      background: 'radial-gradient(60% 60% at 50% 50%, rgba(31,92,217,0.25), transparent 65%), #000',
+    }}>
+      <BrushField opacity={0.4} />
+      <div style={{ position: 'relative', textAlign: 'center', zIndex: 2 }}>
+        <div className="mono cine-pop1" style={{ fontSize: 12, letterSpacing: '0.4em', color: 'var(--gold)', marginBottom: 22 }}>
+          ▸ A LANDON LUKAS HIGHLIGHT REEL
+        </div>
+        <div className="cine-pop2"><NameLockup first={data.first} last={data.last} scale={1.5} /></div>
+        <div className="cine-pop3" style={{ marginTop: 38, display: 'inline-flex', alignItems: 'center', gap: 26 }}>
+          <div className="h-display" style={{ fontSize: 88, color: 'var(--bone)', lineHeight: 1 }}>#{data.number}</div>
+          <div style={{ width: 1, height: 64, background: 'rgba(255,255,255,0.3)' }} />
+          <div style={{ textAlign: 'left' }}>
+            <div className="h-cond" style={{ fontSize: 22, fontWeight: 700, letterSpacing: '0.3em', color: '#fff' }}>{data.position}</div>
+            <div className="mono" style={{ fontSize: 11, letterSpacing: '0.24em', color: 'var(--ink)', marginTop: 6 }}>
+              {data.height} · {data.ageGroup} · {data.school}
+            </div>
+          </div>
+        </div>
+        <div className="cine-pop4 mono" style={{ marginTop: 44, fontSize: 11, color: 'var(--ink-dim)', letterSpacing: '0.32em' }}>
+          {data.tagline}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function TitleCard({ clip, idx, total }) {
+  return (
+    <div style={{
+      position: 'absolute', inset: 0, background: '#000',
+      display: 'grid', placeItems: 'center', animation: 'titleIn 200ms ease',
+    }}>
+      <BrushField opacity={0.35} />
+      <div style={{ position: 'relative', zIndex: 2, textAlign: 'left', padding: '0 8vw' }}>
+        <div className="mono" style={{ fontSize: 12, letterSpacing: '0.4em', color: 'var(--gold)', marginBottom: 18, animation: 'slideUp 400ms ease both' }}>
+          PLAY {String(idx + 1).padStart(2, '0')} / {String(total).padStart(2, '0')} · {clip.tag}
+        </div>
+        <div className="h-display" style={{
+          fontSize: 'clamp(72px, 12vw, 200px)', lineHeight: 0.85, color: '#fff', letterSpacing: '0.01em',
+          animation: 'slideUp 600ms 100ms ease both',
+        }}>{clip.label}</div>
+        <div style={{ position: 'relative', marginTop: 14, animation: 'slideUp 700ms 200ms ease both' }}>
+          <BrushStroke color="var(--blue-bright)" width={500} height={20} seed={idx + 7} />
+        </div>
+        <div className="mono" style={{ fontSize: 14, letterSpacing: '0.28em', color: 'var(--ink)', marginTop: 22, animation: 'slideUp 700ms 300ms ease both' }}>
+          {clip.context}
+        </div>
+      </div>
+    </div>
+  );
+}
+
+function ClipStage({ videoRef, clip, phase, transition, idx, total, data }) {
+  const transClass = phase === 'transition' ? `t-${transition}` : '';
+  return (
+    <div style={{ position: 'absolute', inset: 0 }} className={transClass}>
+      <video ref={videoRef} src={clip.src} muted playsInline
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+      <div style={{
+        position: 'absolute', inset: 0, pointerEvents: 'none',
+        background: 'radial-gradient(75% 65% at 50% 50%, transparent 50%, rgba(0,0,0,0.55) 100%)',
+      }} />
+      <div style={{ position: 'absolute', left: 36, bottom: 60, animation: 'slideUp 500ms ease both', maxWidth: 540 }}>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: '0.36em', color: 'var(--gold)', marginBottom: 10 }}>▸ {clip.tag}</div>
+        <div className="h-display" style={{ fontSize: 64, lineHeight: 0.9, color: '#fff', letterSpacing: '0.02em' }}>{clip.label}</div>
+        <div style={{ marginTop: 6 }}><BrushStroke color="var(--blue-bright)" width={320} height={12} seed={idx + 11} /></div>
+        <div className="mono" style={{ fontSize: 11, letterSpacing: '0.24em', color: 'var(--ink)', marginTop: 12 }}>{clip.context}</div>
+      </div>
+      <div style={{ position: 'absolute', right: 36, top: 90, animation: 'slideUpStat 600ms 200ms ease both', textAlign: 'right' }}>
+        <div className="h-display" style={{ fontSize: 48, color: 'var(--gold)', lineHeight: 1 }}>{clip.stat}</div>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: '0.32em', color: 'var(--bone)', marginTop: 4 }}>#{data.number} · {data.position}</div>
+      </div>
+      <div style={{ position: 'absolute', right: 36, bottom: 60, opacity: 0.85 }}>
+        <Emblem size={48} />
+      </div>
+    </div>
+  );
+}
+
+function OutroCard({ data, onExit }) {
+  return (
+    <div className="cine-fade" style={{
+      position: 'absolute', inset: 0, display: 'grid', placeItems: 'center',
+      background: 'radial-gradient(60% 60% at 50% 50%, rgba(31,92,217,0.3), transparent 65%), #000',
+    }}>
+      <BrushField opacity={0.4} />
+      <div style={{ position: 'relative', zIndex: 2, textAlign: 'center', padding: '0 6vw' }}>
+        <div className="cine-pop1 mono" style={{ fontSize: 12, letterSpacing: '0.4em', color: 'var(--gold)', marginBottom: 24 }}>THAT'S THE TAPE.</div>
+        <div className="cine-pop2 h-display" style={{ fontSize: 'clamp(80px, 12vw, 180px)', lineHeight: 0.85, color: '#fff', letterSpacing: '0.02em' }}>
+          {data.tagline}
+        </div>
+        <div className="cine-pop3" style={{ marginTop: 44, display: 'inline-flex', alignItems: 'center', gap: 22 }}>
+          <Emblem size={56} />
+          <div style={{ textAlign: 'left' }}>
+            <div className="h-cond" style={{ fontSize: 18, fontWeight: 700, letterSpacing: '0.28em', color: '#fff' }}>
+              {data.first} {data.last} · #{data.number}
+            </div>
+            <div className="mono" style={{ fontSize: 11, letterSpacing: '0.24em', color: 'var(--ink)', marginTop: 6 }}>
+              {data.team} · {data.league} · {data.classOf}
+            </div>
+          </div>
+        </div>
+        <button onClick={onExit} className="cine-pop4" style={{
+          marginTop: 50, background: 'var(--gold)', color: '#0a0a0a',
+          border: 'none', cursor: 'pointer', padding: '14px 30px',
+          fontFamily: 'Bebas Neue, sans-serif', fontSize: 18, letterSpacing: '0.18em',
+          clipPath: 'polygon(0 0, 100% 0, 96% 100%, 4% 100%)',
+          display: 'block',
+        }}>BACK TO REEL</button>
+      </div>
+    </div>
+  );
+}
+
+function CinematicView({ data, onExit, audioMuted, onToggleAudio }) {
+  const [phase, setPhase] = React.useState('intro');
+  const [idx, setIdx] = React.useState(0);
+  const [transition, setTransition] = React.useState('cut');
+  const videoRef = React.useRef(null);
+
+  React.useEffect(() => {
+    let timer;
+    if (phase === 'intro') {
+      timer = setTimeout(() => { setPhase('title'); setIdx(0); }, 3600);
+    } else if (phase === 'title') {
+      timer = setTimeout(() => setPhase('play'), 1600);
+    } else if (phase === 'transition') {
+      timer = setTimeout(() => {
+        if (idx + 1 >= data.clips.length) setPhase('outro');
+        else { setIdx(idx + 1); setPhase('title'); }
+      }, 600);
+    } else if (phase === 'outro') {
+      timer = setTimeout(() => onExit(), 5500);
+    }
+    return () => clearTimeout(timer);
+  }, [phase, idx]);
+
+  React.useEffect(() => {
+    if (phase !== 'play') return;
+    const v = videoRef.current;
+    if (!v) return;
+    v.currentTime = 0; v.muted = true; v.play().catch(() => {});
+    const onEnded = () => goNext();
+    const cap = setTimeout(goNext, CLIP_MAX * 1000);
+    function goNext() {
+      clearTimeout(cap);
+      const t = TRANSITIONS[idx % TRANSITIONS.length];
+      setTransition(t); setPhase('transition');
+    }
+    v.addEventListener('ended', onEnded);
+    return () => { v.removeEventListener('ended', onEnded); clearTimeout(cap); };
+  }, [phase, idx]);
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onExit();
+      if (e.key === 'ArrowRight' && phase === 'play') {
+        const t = TRANSITIONS[idx % TRANSITIONS.length];
+        setTransition(t); setPhase('transition');
+      }
+      if ((e.key === 'm' || e.key === 'M') && onToggleAudio) onToggleAudio();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [phase, idx, onToggleAudio]);
+
+  const clip = data.clips[idx];
+  const total = data.clips.length;
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 100, background: '#000', overflow: 'hidden', fontFamily: 'Barlow, sans-serif' }}>
+      <CinematicHUD idx={idx} total={total} phase={phase} clip={clip} data={data} onExit={onExit} audioMuted={audioMuted} onToggleAudio={onToggleAudio} />
+      {phase === 'intro' && <IntroCard data={data} />}
+      {phase === 'title' && <TitleCard clip={clip} idx={idx} total={total} />}
+      {(phase === 'play' || phase === 'transition') && (
+        <ClipStage videoRef={videoRef} clip={clip} phase={phase} transition={transition} idx={idx} total={total} data={data} />
+      )}
+      {phase === 'outro' && <OutroCard data={data} onExit={onExit} />}
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// AUDIO
+// ═══════════════════════════════════════════════════════════
+
+function ReelAudio({ playing, muted, volume = 0.85 }) {
+  const audioRef = React.useRef(null);
+
+  React.useEffect(() => {
+    const a = audioRef.current;
+    if (!a) return;
+    const v = volume > 1 ? volume / 100 : volume;
+    a.volume = Math.max(0, Math.min(1, v));
+    a.muted = muted;
+    if (playing) { a.play().catch(() => {}); }
+    else { a.pause(); }
+  }, [playing, muted, volume]);
+
+  return <audio ref={audioRef} src="assets/soundtrack.mp3" loop preload="auto" style={{ display: 'none' }} />;
+}
+
+// ═══════════════════════════════════════════════════════════
+// SINGLE CLIP VIEW
+// ═══════════════════════════════════════════════════════════
+
+function SingleClipView({ data, startIdx, onExit, audioMuted, onToggleAudio }) {
+  const [idx, setIdx] = React.useState(startIdx);
+  const clip = data.clips[idx];
+  const ref = React.useRef(null);
+
+  React.useEffect(() => {
+    const v = ref.current; if (!v) return;
+    v.currentTime = 0; v.muted = true; v.play().catch(() => {});
+    const onEnd = () => { if (idx + 1 < data.clips.length) setIdx(idx + 1); else onExit(); };
+    v.addEventListener('ended', onEnd);
+    return () => v.removeEventListener('ended', onEnd);
+  }, [idx]);
+
+  React.useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === 'Escape') onExit();
+      if (e.key === 'ArrowRight') setIdx(i => Math.min(i + 1, data.clips.length - 1));
+      if (e.key === 'ArrowLeft')  setIdx(i => Math.max(i - 1, 0));
+      if ((e.key === 'm' || e.key === 'M') && onToggleAudio) onToggleAudio();
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [onToggleAudio]);
+
+  return (
+    <div style={{ position: 'fixed', inset: 0, zIndex: 100, background: '#000' }}>
+      <video ref={ref} src={clip.src} muted playsInline
+        style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover' }} />
+      <div style={{
+        position: 'absolute', inset: 0,
+        background: 'radial-gradient(75% 65% at 50% 50%, transparent 50%, rgba(0,0,0,0.6) 100%)',
+        pointerEvents: 'none',
+      }} />
+
+      {/* HUD */}
+      <div style={{ position: 'absolute', top: 20, left: 28, right: 28, display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: 12 }}>
+          <Emblem size={32} />
+          <div className="mono" style={{ fontSize: 10, letterSpacing: '0.3em', color: 'var(--gold)' }}>
+            ISOLATED · {String(idx + 1).padStart(2, '0')} / {String(data.clips.length).padStart(2, '0')}
+          </div>
+        </div>
+        <div style={{ display: 'flex', gap: 10, alignItems: 'center' }}>
+          <button onClick={onToggleAudio} title={audioMuted ? 'Unmute soundtrack' : 'Mute soundtrack'} style={{
+            background: audioMuted ? 'transparent' : 'var(--gold)',
+            color: audioMuted ? '#fff' : '#0a0a0a',
+            border: '1px solid ' + (audioMuted ? 'rgba(255,255,255,0.3)' : 'var(--gold)'),
+            padding: '6px 12px', cursor: 'pointer',
+            fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.2em', fontSize: 13,
+            display: 'inline-flex', alignItems: 'center', gap: 8,
+          }}>
+            <SpeakerIcon muted={audioMuted} />
+            {audioMuted ? 'SOUND ON' : 'MUTE'}
+          </button>
+          <button onClick={onExit} style={{
+            background: 'transparent', border: '1px solid rgba(255,255,255,0.3)',
+            color: '#fff', padding: '6px 12px', cursor: 'pointer',
+            fontFamily: 'Bebas Neue, sans-serif', letterSpacing: '0.2em', fontSize: 13,
+          }}>EXIT ✕</button>
+        </div>
+      </div>
+
+      {/* lower-third */}
+      <div style={{ position: 'absolute', left: 36, bottom: 60, animation: 'slideUp 500ms ease both', maxWidth: 540 }}>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: '0.36em', color: 'var(--gold)', marginBottom: 10 }}>▸ {clip.tag}</div>
+        <div className="h-display" style={{ fontSize: 64, lineHeight: 0.9, color: '#fff', letterSpacing: '0.02em' }}>{clip.label}</div>
+        <div style={{ marginTop: 6 }}><BrushStroke color="var(--blue-bright)" width={320} height={12} seed={idx + 11} /></div>
+        <div className="mono" style={{ fontSize: 11, letterSpacing: '0.24em', color: 'var(--ink)', marginTop: 12 }}>{clip.context}</div>
+      </div>
+
+      <div style={{ position: 'absolute', right: 36, top: 80, textAlign: 'right' }}>
+        <div className="h-display" style={{ fontSize: 48, color: 'var(--gold)', lineHeight: 1 }}>{clip.stat}</div>
+        <div className="mono" style={{ fontSize: 10, letterSpacing: '0.32em', color: 'var(--bone)', marginTop: 4 }}>#{data.number} · {data.position}</div>
+      </div>
+
+      {/* nav dots */}
+      <div style={{ position: 'absolute', bottom: 28, left: 0, right: 0, display: 'flex', justifyContent: 'center', gap: 10 }}>
+        {data.clips.map((c, i) => (
+          <button key={c.id} onClick={() => setIdx(i)} style={{
+            width: 28, height: 6, border: 'none', cursor: 'pointer',
+            background: i === idx ? 'var(--gold)' : 'rgba(255,255,255,0.25)',
+          }} />
+        ))}
+      </div>
+      <div className="mono" style={{ position: 'absolute', bottom: 8, left: 0, right: 0, textAlign: 'center', fontSize: 9, color: 'var(--ink-dim)', letterSpacing: '0.24em' }}>
+        ← → CLIP · ESC EXIT
+      </div>
+    </div>
+  );
+}
+
+// ═══════════════════════════════════════════════════════════
+// APP SHELL
+// ═══════════════════════════════════════════════════════════
+
+const TWEAK_DEFAULTS = { "theme": "navy" };
+
+function App() {
+  const data = JSON.parse(document.getElementById('lando-data').textContent);
+  const [mode, setMode] = React.useState('hub');
+  const [focusedClip, setFocusedClip] = React.useState(null);
+  const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
+  const [audioMuted, setAudioMuted] = React.useState(false);
+  const audioPlaying = mode === 'cinematic' || mode === 'cinematic-single';
+
+  React.useEffect(() => {
+    const themeKey = tweaks.theme || 'navy';
+    const theme = THEMES[themeKey] || THEMES.navy;
+    applyTheme(theme);
+  }, [tweaks.theme]);
+
+  const onPlayAll = () => { setFocusedClip(null); setMode('cinematic'); };
+  const onPlayClip = (i) => { setFocusedClip(i); setMode('cinematic-single'); };
+  const onExit = () => { setMode('hub'); setFocusedClip(null); };
+
+  return (
+    <>
+      {mode === 'hub' && (
+        <HubView data={data} onPlayAll={onPlayAll} onPlayClip={onPlayClip} themeKey={tweaks.theme} />
+      )}
+      {mode === 'cinematic' && (
+        <CinematicView data={data} onExit={onExit} audioMuted={audioMuted} onToggleAudio={() => setAudioMuted(m => !m)} />
+      )}
+      {mode === 'cinematic-single' && (
+        <SingleClipView data={data} startIdx={focusedClip} onExit={onExit} audioMuted={audioMuted} onToggleAudio={() => setAudioMuted(m => !m)} />
+      )}
+
+      <ReelAudio playing={audioPlaying} muted={audioMuted} volume={85} />
+
+      <TweaksPanel title="Tweaks">
+        <TweakSection label="Color theme" />
+        <TweakRadio
+          label="Theme"
+          value={tweaks.theme}
+          onChange={(v) => setTweak('theme', v)}
+          options={['navy', 'midnight', 'blacktop', 'ice']}
+        />
+      </TweaksPanel>
+    </>
+  );
+}
+
+ReactDOM.createRoot(document.getElementById('root')).render(<App />);
+</script>
+</body>
+</html>
