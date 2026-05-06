@@ -23,7 +23,7 @@
   .mono      { font-family: 'JetBrains Mono', monospace; }
 
   .arena-bg {
-    position: fixed; inset: 0; z-index: 0; pointer-events: none;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 0; pointer-events: none;
     background:
       radial-gradient(80% 60% at 12% 0%, rgba(242,183,51,0.18), transparent 60%),
       radial-gradient(60% 50% at 95% 30%, rgba(31,92,217,0.32), transparent 60%),
@@ -31,14 +31,14 @@
       linear-gradient(180deg, #050913 0%, #07101f 40%, #050913 100%);
   }
   .arena-bg::after {
-    content: ""; position: absolute; inset: 0;
+    content: ""; position: absolute; top: 0; left: 0; right: 0; bottom: 0;
     background-image:
       repeating-linear-gradient(115deg, rgba(255,255,255,0.018) 0 2px, transparent 2px 7px),
       radial-gradient(circle at 50% 50%, transparent 60%, rgba(0,0,0,0.55) 100%);
     mix-blend-mode: screen;
   }
   .grain {
-    position: fixed; inset: 0; z-index: 1; pointer-events: none; opacity: 0.06;
+    position: fixed; top: 0; left: 0; right: 0; bottom: 0; z-index: 1; pointer-events: none; opacity: 0.06;
     background-image: radial-gradient(1px 1px at 20% 30%, #fff, transparent), radial-gradient(1px 1px at 80% 70%, #fff, transparent), radial-gradient(1px 1px at 40% 90%, #fff, transparent), radial-gradient(1px 1px at 60% 10%, #fff, transparent);
     background-size: 200px 200px, 250px 250px, 180px 180px, 220px 220px;
   }
@@ -59,7 +59,7 @@
   .cine-pop3 { animation: cinePop 900ms 500ms ease both; }
   .cine-pop4 { animation: cinePop 900ms 800ms ease both; }
   .cine-fade { animation: titleIn 400ms ease both; }
-  .t-flash::after { content:""; position:absolute; inset:0; background:#fff; animation:tFlash 600ms ease forwards; pointer-events:none; }
+  .t-flash::after { content:""; position:absolute; top:0; left:0; right:0; bottom:0; background:#fff; animation:tFlash 600ms ease forwards; pointer-events:none; }
   .t-wipe    { animation: tWipeR 600ms ease forwards; }
   .t-shutter { animation: tShutter 600ms ease forwards; }
   .t-cut     { animation: titleIn 100ms ease forwards reverse; }
@@ -231,22 +231,24 @@
     display: block;
   }
 
-  /* Clip cards in hub grid */
+  /* Clip cards in hub grid — padding-bottom trick for iOS aspect ratio */
   .clip-card {
     position: relative;
     cursor: pointer;
     overflow: hidden;
     background: var(--navy-1);
     touch-action: manipulation;
+    width: 100%;
   }
-  /* Aspect ratio with iOS fallback */
-  .clip-card-aspect {
-    aspect-ratio: 16 / 10;
-    /* Fallback for iOS < 15 */
+  .clip-card::before {
+    content: '';
+    display: block;
+    padding-top: 62.5%; /* 16:10 */
   }
-  @supports not (aspect-ratio: 1) {
-    .clip-card-aspect { height: 0; padding-bottom: 62.5%; }
-    .clip-card-aspect > * { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
+  .clip-card > * {
+    position: absolute;
+    top: 0; left: 0; right: 0; bottom: 0;
+    width: 100%; height: 100%;
   }
 
   /* HUD bars inset for notch / home-indicator safe areas */
@@ -507,7 +509,7 @@ function BrushField({ opacity=0.45 }) {
     const op = (i%5===0?0.5:0.35)*opacity;
     lines.push(<div key={i} style={{position:'absolute',top:`${(i*7)-20}%`,left:`${-20+(i%3)*8}%`,width:`${50+(i%4)*16}%`,height:2+(i%3),background:col,opacity:op,transform:'rotate(-22deg)',filter:'blur(0.4px)'}}/>);
   }
-  return <div style={{position:'absolute',inset:0,overflow:'hidden',pointerEvents:'none'}}>{lines}</div>;
+  return <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,overflow:'hidden',pointerEvents:'none'}}>{lines}</div>;
 }
 
 // ═══════════════════════════════════════════════════════════
@@ -522,9 +524,9 @@ function ClipCard({ clip, idx, onPlay, hovered, setHovered }) {
     if (isHover) { v.currentTime=0; v.play().catch(()=>{}); } else { v.pause(); v.currentTime=0; }
   }, [isHover]);
   return (
-    <div onMouseEnter={()=>setHovered(idx)} onMouseLeave={()=>setHovered(null)} onClick={()=>onPlay(idx)} className="clip-card clip-card-aspect" style={{border:'1px solid rgba(255,255,255,0.06)',transition:'transform 220ms ease, border-color 220ms',transform:isHover?'translateY(-4px)':'translateY(0)',borderColor:isHover?'var(--blue-bright)':'rgba(255,255,255,0.06)'}}>
+    <div onMouseEnter={()=>setHovered(idx)} onMouseLeave={()=>setHovered(null)} onClick={()=>onPlay(idx)} className="clip-card" style={{border:'1px solid rgba(255,255,255,0.06)',transition:'transform 220ms ease, border-color 220ms',transform:isHover?'translateY(-4px)':'translateY(0)',borderColor:isHover?'var(--blue-bright)':'rgba(255,255,255,0.06)'}}>
       <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" preload="metadata" style={{position:'absolute',top:0,left:0,width:'100%',height:'100%',objectFit:'cover',opacity:isHover?1:0.55,transition:'opacity 280ms',filter:isHover?'none':'saturate(0.8) contrast(1.05)'}}/>
-      <div style={{position:'absolute',inset:0,background:isHover?'linear-gradient(180deg,rgba(5,8,15,0)0%,rgba(5,8,15,0)50%,rgba(5,8,15,0.92)100%)':'linear-gradient(180deg,rgba(5,8,15,0.5)0%,rgba(16,35,65,0.4)50%,rgba(5,8,15,0.95)100%)',pointerEvents:'none'}}/>
+      <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:isHover?'linear-gradient(180deg,rgba(5,8,15,0)0%,rgba(5,8,15,0)50%,rgba(5,8,15,0.92)100%)':'linear-gradient(180deg,rgba(5,8,15,0.5)0%,rgba(16,35,65,0.4)50%,rgba(5,8,15,0.95)100%)',pointerEvents:'none'}}/>
       <div className="mono" style={{position:'absolute',top:14,left:14,fontSize:11,color:'var(--gold)',letterSpacing:'0.2em'}}>PLAY · {String(idx+1).padStart(2,'0')} / 07</div>
       <div className="h-cond" style={{position:'absolute',top:14,right:14,fontSize:11,fontWeight:700,letterSpacing:'0.18em',padding:'4px 10px',background:'var(--blue)',color:'#fff',clipPath:'polygon(8% 0,100% 0,92% 100%,0 100%)'}}>{clip.tag}</div>
       <div style={{position:'absolute',left:16,right:16,bottom:14}}>
@@ -552,7 +554,7 @@ function PosterCard({ src, i, onClick }) {
 function PosterLightbox({ src, onClose }) {
   if (!src) return null;
   return (
-    <div onClick={onClose} style={{position:'fixed',inset:0,zIndex:200,background:'rgba(2,4,8,0.92)',display:'grid',placeItems:'center',backdropFilter:'blur(8px)',animation:'fade 200ms ease',padding:16}}>
+    <div onClick={onClose} style={{position:'fixed',top:0,left:0,right:0,bottom:0,zIndex:200,background:'rgba(2,4,8,0.92)',display:'grid',placeItems:'center',backdropFilter:'blur(8px)',animation:'fade 200ms ease',padding:16}}>
       <img src={src} style={{maxWidth:'90vw',maxHeight:'90vh',boxShadow:'0 20px 80px rgba(0,0,0,0.7)'}} alt=""/>
       <div className="mono" style={{position:'fixed',bottom:16,color:'var(--ink)',fontSize:11,letterSpacing:'0.2em',textAlign:'center'}}>TAP ANYWHERE TO CLOSE</div>
     </div>
@@ -623,7 +625,7 @@ function HubView({ data, onPlayAll, onPlayClip }) {
           <div style={{position:'absolute',inset:'-2%',background:'linear-gradient(135deg,var(--blue)0%,transparent 60%)',opacity:0.4,filter:'blur(40px)'}}/>
           <div className="hero-poster-inner">
             <img src={data.posters[0]} alt="" style={{width:'100%',height:'100%',objectFit:'cover',display:'block'}}/>
-            <div style={{position:'absolute',inset:0,background:'linear-gradient(180deg,transparent 60%,rgba(5,8,15,0.85)100%)'}}/>
+            <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'linear-gradient(180deg,transparent 60%,rgba(5,8,15,0.85)100%)'}}/>
             <div className="mono" style={{position:'absolute',bottom:16,left:16,fontSize:10,color:'var(--gold)',letterSpacing:'0.24em'}}>KEY ART · {data.tagline}</div>
           </div>
         </div>
@@ -718,7 +720,7 @@ function CinematicHUD({ idx, total, phase, onExit, audioMuted, onToggleAudio }) 
         <div style={{display:'flex',gap:4}}>
           {Array.from({length:total}).map((_,i) => (
             <div key={i} style={{flex:1,height:3,background:'rgba(255,255,255,0.15)',overflow:'hidden',position:'relative'}}>
-              <div style={{position:'absolute',inset:0,background:i<idx||(i===idx&&phase==='transition')?'var(--gold)':i===idx&&phase==='play'?'var(--blue-bright)':'transparent',width:'100%',animation:i===idx&&phase==='play'?`progressFill ${CLIP_MAX}s linear forwards`:'none',transformOrigin:'left'}}/>
+              <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:i<idx||(i===idx&&phase==='transition')?'var(--gold)':i===idx&&phase==='play'?'var(--blue-bright)':'transparent',width:'100%',animation:i===idx&&phase==='play'?`progressFill ${CLIP_MAX}s linear forwards`:'none',transformOrigin:'left'}}/>
             </div>
           ))}
         </div>
@@ -733,7 +735,7 @@ function CinematicHUD({ idx, total, phase, onExit, audioMuted, onToggleAudio }) 
 
 function IntroCard({ data }) {
   return (
-    <div className="cine-fade" style={{position:'absolute',inset:0,display:'grid',placeItems:'center',background:'radial-gradient(60% 60% at 50% 50%,rgba(31,92,217,0.25),transparent 65%),#000'}}>
+    <div className="cine-fade" style={{position:'absolute',top:0,left:0,right:0,bottom:0,display:'grid',placeItems:'center',background:'radial-gradient(60% 60% at 50% 50%,rgba(31,92,217,0.25),transparent 65%),#000'}}>
       <BrushField opacity={0.4}/>
       <div style={{position:'relative',textAlign:'center',zIndex:2,padding:'0 clamp(16px,5vw,48px)'}}>
         <div className="mono cine-pop1" style={{fontSize:'clamp(9px,1.5vw,12px)',letterSpacing:'0.4em',color:'var(--gold)',marginBottom:22}}>▸ A LANDON LUKAS HIGHLIGHT REEL</div>
@@ -754,7 +756,7 @@ function IntroCard({ data }) {
 
 function TitleCard({ clip, idx, total }) {
   return (
-    <div style={{position:'absolute',inset:0,background:'#000',display:'grid',placeItems:'center',animation:'titleIn 200ms ease'}}>
+    <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'#000',display:'grid',placeItems:'center',animation:'titleIn 200ms ease'}}>
       <BrushField opacity={0.35}/>
       <div style={{position:'relative',zIndex:2,textAlign:'left',padding:'0 clamp(16px,8vw,8vw)'}}>
         <div className="mono" style={{fontSize:'clamp(9px,1.5vw,12px)',letterSpacing:'0.4em',color:'var(--gold)',marginBottom:18,animation:'slideUp 400ms ease both'}}>
@@ -773,9 +775,9 @@ function TitleCard({ clip, idx, total }) {
 function ClipStage({ videoRef, clip, phase, transition, idx, data }) {
   const transClass = phase==='transition'?`t-${transition}`:'';
   return (
-    <div style={{position:'absolute',inset:0}} className={transClass}>
+    <div style={{position:'absolute',top:0,left:0,right:0,bottom:0}} className={transClass}>
       <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" className="fill-video"/>
-      <div style={{position:'absolute',inset:0,pointerEvents:'none',background:'radial-gradient(75% 65% at 50% 50%,transparent 50%,rgba(0,0,0,0.55)100%)'}}/>
+      <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,pointerEvents:'none',background:'radial-gradient(75% 65% at 50% 50%,transparent 50%,rgba(0,0,0,0.55)100%)'}}/>
       <div className="cine-lower">
         <div className="mono" style={{fontSize:'clamp(8px,1.2vw,10px)',letterSpacing:'0.36em',color:'var(--gold)',marginBottom:8}}>▸ {clip.tag}</div>
         <div className="h-display cine-lower-title">{clip.label}</div>
@@ -793,7 +795,7 @@ function ClipStage({ videoRef, clip, phase, transition, idx, data }) {
 
 function OutroCard({ data, onExit }) {
   return (
-    <div className="cine-fade" style={{position:'absolute',inset:0,display:'grid',placeItems:'center',background:'radial-gradient(60% 60% at 50% 50%,rgba(31,92,217,0.3),transparent 65%),#000'}}>
+    <div className="cine-fade" style={{position:'absolute',top:0,left:0,right:0,bottom:0,display:'grid',placeItems:'center',background:'radial-gradient(60% 60% at 50% 50%,rgba(31,92,217,0.3),transparent 65%),#000'}}>
       <BrushField opacity={0.4}/>
       <div style={{position:'relative',zIndex:2,textAlign:'center',padding:'0 clamp(16px,6vw,6vw)'}}>
         <div className="cine-pop1 mono" style={{fontSize:'clamp(9px,1.5vw,12px)',letterSpacing:'0.4em',color:'var(--gold)',marginBottom:20}}>THAT'S THE TAPE.</div>
@@ -889,7 +891,7 @@ function SingleClipView({ data, startIdx, onExit, audioMuted, onToggleAudio }) {
   return (
     <div className="fullscreen-view">
       <video ref={ref} src={clip.src} muted playsInline webkit-playsinline="true" className="fill-video"/>
-      <div style={{position:'absolute',inset:0,background:'radial-gradient(75% 65% at 50% 50%,transparent 50%,rgba(0,0,0,0.6)100%)',pointerEvents:'none'}}/>
+      <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:'radial-gradient(75% 65% at 50% 50%,transparent 50%,rgba(0,0,0,0.6)100%)',pointerEvents:'none'}}/>
 
       {/* HUD top */}
       <div className="cine-hud-top">
