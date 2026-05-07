@@ -114,7 +114,6 @@
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
     gap: 14px;
-    align-items: start; /* prevents stretch from overriding aspect-ratio */
   }
   .posters-grid {
     display: grid;
@@ -229,11 +228,10 @@
     display: block;
   }
 
-  /* Clip cards — aspect-ratio works because clips-grid uses align-items:start */
+  /* Clip cards — video is in flow and sets the card height naturally */
   .clip-card {
     position: relative;
     width: 100%;
-    aspect-ratio: 16 / 10;
     cursor: pointer;
     overflow: hidden;
     background: var(--navy-1);
@@ -516,7 +514,10 @@ function ClipCard({ clip, idx, onPlay, hovered, setHovered }) {
     <div onMouseEnter={()=>setHovered(idx)} onMouseLeave={()=>setHovered(null)} onClick={()=>onPlay(idx)}
       className="clip-card"
       style={{border:'1px solid',borderColor:isHover?'var(--blue-bright)':'rgba(255,255,255,0.06)',transition:'transform 220ms ease, border-color 220ms',transform:isHover?'translateY(-4px)':'translateY(0)'}}>
-      <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" preload="metadata" style={{position:'absolute',top:0,left:0,right:0,bottom:0,width:'100%',height:'100%',objectFit:'cover',opacity:isHover?1:0.55,transition:'opacity 280ms',filter:isHover?'none':'saturate(0.8) contrast(1.05)'}}/>
+      {/* Video IN FLOW — its natural size determines the card's height */}
+      <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" preload="metadata"
+        style={{display:'block',width:'100%',height:'auto',aspectRatio:'16/10',objectFit:'cover',opacity:isHover?1:0.55,transition:'opacity 280ms',filter:isHover?'none':'saturate(0.8) contrast(1.05)'}}/>
+      {/* All overlays positioned absolutely over the video */}
       <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:isHover?'linear-gradient(180deg,rgba(5,8,15,0)0%,rgba(5,8,15,0)50%,rgba(5,8,15,0.92)100%)':'linear-gradient(180deg,rgba(5,8,15,0.5)0%,rgba(16,35,65,0.4)50%,rgba(5,8,15,0.95)100%)',pointerEvents:'none'}}/>
       <div className="mono" style={{position:'absolute',top:14,left:14,fontSize:11,color:'var(--gold)',letterSpacing:'0.2em'}}>PLAY · {String(idx+1).padStart(2,'0')} / 07</div>
       <div className="h-cond" style={{position:'absolute',top:14,right:14,fontSize:11,fontWeight:700,letterSpacing:'0.18em',padding:'4px 10px',background:'var(--blue)',color:'#fff',clipPath:'polygon(8% 0,100% 0,92% 100%,0 100%)'}}>{clip.tag}</div>
@@ -928,17 +929,6 @@ function SingleClipView({ data, startIdx, onExit, audioMuted, onToggleAudio }) {
 // AUDIO
 // ═══════════════════════════════════════════════════════════
 
-function ReelAudio({ playing, muted, volume=0.85 }) {
-  const audioRef = React.useRef(null);
-  React.useEffect(() => {
-    const a=audioRef.current; if(!a) return;
-    const v=volume>1?volume/100:volume;
-    a.volume=Math.max(0,Math.min(1,v)); a.muted=muted;
-    if(playing) a.play().catch(()=>{}); else a.pause();
-  }, [playing,muted,volume]);
-  return <audio ref={audioRef} src="assets/soundtrack.mp3" loop preload="auto" style={{display:'none'}}/>;
-}
-
 // ═══════════════════════════════════════════════════════════
 // APP SHELL
 // ═══════════════════════════════════════════════════════════
@@ -951,6 +941,7 @@ function App() {
   const [focusedClip, setFocusedClip] = React.useState(null);
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
   const [audioMuted, setAudioMuted] = React.useState(false);
+  const audioRef = React.useRef(null);
   const audioPlaying = mode==='cinematic'||mode==='cinematic-single';
 
   React.useEffect(() => {
@@ -958,17 +949,36 @@ function App() {
     applyTheme(theme);
   }, [tweaks.theme]);
 
-  const onPlayAll  = () => { setFocusedClip(null); setMode('cinematic'); };
-  const onPlayClip = (i) => { setFocusedClip(i); setMode('cinematic-single'); };
+  // Sync play/pause when mode or mute changes (after gesture unlock)
+  React.useEffect(() => {
+    const a = audioRef.current; if (!a) return;
+    a.volume = 0.85; a.muted = audioMuted;
+    if (audioPlaying && !audioMuted) a.play().catch(()=>{});
+    else a.pause();
+  }, [audioPlaying, audioMuted]);
+
+  // Call this synchronously inside a user-gesture handler to unlock iOS audio
+  const startAudio = () => {
+    const a = audioRef.current;
+    if (a && !audioMuted) a.play().catch(()=>{});
+  };
+
+  const onPlayAll  = () => { startAudio(); setFocusedClip(null); setMode('cinematic'); };
+  const onPlayClip = (i) => { startAudio(); setFocusedClip(i); setMode('cinematic-single'); };
   const onExit     = () => { setMode('hub'); setFocusedClip(null); };
-  const toggleAudio = () => setAudioMuted(m=>!m);
+  const toggleAudio = () => {
+    const newMuted = !audioMuted;
+    setAudioMuted(newMuted);
+    const a = audioRef.current; if (!a) return;
+    if (!newMuted && audioPlaying) a.play().catch(()=>{}); else a.pause();
+  };
 
   return (
     <>
       {mode==='hub'           && <HubView data={data} onPlayAll={onPlayAll} onPlayClip={onPlayClip} themeKey={tweaks.theme}/>}
       {mode==='cinematic'     && <CinematicView data={data} onExit={onExit} audioMuted={audioMuted} onToggleAudio={toggleAudio}/>}
       {mode==='cinematic-single' && <SingleClipView data={data} startIdx={focusedClip} onExit={onExit} audioMuted={audioMuted} onToggleAudio={toggleAudio}/>}
-      <ReelAudio playing={audioPlaying} muted={audioMuted} volume={85}/>
+      <audio ref={audioRef} src="assets/soundtrack.mp3" loop preload="auto" style={{display:'none'}}/>
       <TweaksPanel title="Tweaks">
         <TweakSection label="Color theme"/>
         <TweakRadio label="Theme" value={tweaks.theme} onChange={v=>setTweak('theme',v)} options={['navy','midnight','blacktop','ice']}/>
