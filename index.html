@@ -218,13 +218,17 @@
     overflow: hidden;
   }
 
-  /* Video always fills its container, cover crop */
+  /* Video fills container while preserving aspect ratio — works on all iOS */
+  /* Replaces object-fit:cover which Chrome iOS does not honour on <video> */
   .fill-video {
     position: absolute;
-    top: 0; left: 0; right: 0; bottom: 0;
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    min-width: 100%;
+    min-height: 100%;
+    width: auto;
+    height: auto;
     display: block;
   }
 
@@ -767,7 +771,7 @@ function TitleCard({ clip, idx, total }) {
 function ClipStage({ videoRef, clip, phase, transition, idx, data }) {
   const transClass = phase==='transition'?`t-${transition}`:'';
   return (
-    <div style={{position:'absolute',top:0,left:0,right:0,bottom:0}} className={transClass}>
+    <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,overflow:'hidden'}} className={transClass}>
       <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" className="fill-video"/>
       <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,pointerEvents:'none',background:'radial-gradient(75% 65% at 50% 50%,transparent 50%,rgba(0,0,0,0.55)100%)'}}/>
       <div className="cine-lower">
