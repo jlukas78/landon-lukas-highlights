@@ -317,6 +317,7 @@
 <div class="arena-bg"></div>
 <div class="grain"></div>
 <div id="root"></div>
+<div style="position:fixed;bottom:4px;right:6px;z-index:9999;font:9px monospace;color:rgba(255,255,255,0.35);pointer-events:none">v10</div>
 
 <script>
   // Fix iOS Safari: --vh is the true 1% of visible viewport height (no browser chrome)
@@ -518,9 +519,9 @@ function ClipCard({ clip, idx, onPlay, hovered, setHovered }) {
     <div onMouseEnter={()=>setHovered(idx)} onMouseLeave={()=>setHovered(null)} onClick={()=>onPlay(idx)}
       className="clip-card"
       style={{border:'1px solid',borderColor:isHover?'var(--blue-bright)':'rgba(255,255,255,0.06)',transition:'transform 220ms ease, border-color 220ms',transform:isHover?'translateY(-4px)':'translateY(0)'}}>
-      {/* Video IN FLOW — its natural size determines the card's height */}
+      {/* Video absolutely fills JS-set card height; transform centering avoids object-fit */}
       <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" preload="metadata"
-        style={{display:'block',width:'100%',height:'auto',aspectRatio:'16/10',objectFit:'cover',opacity:isHover?1:0.55,transition:'opacity 280ms',filter:isHover?'none':'saturate(0.8) contrast(1.05)'}}/>
+        style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',minWidth:'100%',minHeight:'100%',width:'auto',height:'auto',opacity:isHover?1:0.55,transition:'opacity 280ms',filter:isHover?'none':'saturate(0.8) contrast(1.05)'}}/>
       {/* All overlays positioned absolutely over the video */}
       <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:isHover?'linear-gradient(180deg,rgba(5,8,15,0)0%,rgba(5,8,15,0)50%,rgba(5,8,15,0.92)100%)':'linear-gradient(180deg,rgba(5,8,15,0.5)0%,rgba(16,35,65,0.4)50%,rgba(5,8,15,0.95)100%)',pointerEvents:'none'}}/>
       <div className="mono" style={{position:'absolute',top:14,left:14,fontSize:11,color:'var(--gold)',letterSpacing:'0.2em'}}>PLAY · {String(idx+1).padStart(2,'0')} / 07</div>
@@ -560,6 +561,29 @@ function PosterLightbox({ src, onClose }) {
 function HubView({ data, onPlayAll, onPlayClip }) {
   const [hovered, setHovered] = React.useState(null);
   const [poster, setPoster] = React.useState(null);
+  const clipsGridRef = React.useRef(null);
+
+  // JS-computed card heights — the only approach that works reliably on iOS Chrome.
+  // CSS aspect-ratio / padding tricks all fail in single-column grid on portrait iPhone.
+  React.useLayoutEffect(() => {
+    const setHeights = () => {
+      const grid = clipsGridRef.current;
+      if (!grid) return;
+      grid.querySelectorAll('.clip-card').forEach(card => {
+        const w = card.offsetWidth;
+        if (w > 0) card.style.height = Math.round(w * 0.625) + 'px'; // 16:10
+      });
+    };
+    setHeights();
+    window.addEventListener('resize', setHeights);
+    const onOrient = () => setTimeout(setHeights, 300);
+    window.addEventListener('orientationchange', onOrient);
+    return () => {
+      window.removeEventListener('resize', setHeights);
+      window.removeEventListener('orientationchange', onOrient);
+    };
+  }, []);
+
   React.useEffect(() => {
     const onKey = (e) => { if (e.key==='Escape') setPoster(null); };
     window.addEventListener('keydown', onKey);
@@ -646,7 +670,7 @@ function HubView({ data, onPlayAll, onPlayClip }) {
           </div>
           <div className="mono" style={{fontSize:11,color:'var(--ink-dim)',letterSpacing:'0.2em'}}>HOVER TO PREVIEW · CLICK TO ISOLATE</div>
         </div>
-        <div className="clips-grid">
+        <div className="clips-grid" ref={clipsGridRef}>
           {data.clips.map((c,i) => <ClipCard key={c.id} clip={c} idx={i} onPlay={onPlayClip} hovered={hovered} setHovered={setHovered}/>)}
         </div>
       </section>
@@ -867,10 +891,19 @@ function SingleClipView({ data, startIdx, onExit, audioMuted, onToggleAudio }) {
 
   React.useEffect(() => {
     const v=ref.current; if(!v) return;
-    v.currentTime=0; v.muted=true; v.play().catch(()=>{});
+    v.currentTime=0; v.muted=true;
+    v.play().then(()=>{
+      // iOS: hand off to native player which always sizes correctly
+      if(v.webkitEnterFullscreen) v.webkitEnterFullscreen();
+    }).catch(()=>{});
     const onEnd=()=>{if(idx+1<data.clips.length)setIdx(idx+1);else onExit();};
+    const onExitFS=()=>onExit(); // user dismissed native player
     v.addEventListener('ended',onEnd);
-    return ()=>v.removeEventListener('ended',onEnd);
+    v.addEventListener('webkitendfullscreen',onExitFS);
+    return ()=>{
+      v.removeEventListener('ended',onEnd);
+      v.removeEventListener('webkitendfullscreen',onExitFS);
+    };
   }, [idx]);
 
   React.useEffect(() => {
