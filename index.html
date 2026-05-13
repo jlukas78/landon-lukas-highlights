@@ -974,9 +974,9 @@ function SingleClipView({ data, startIdx, onExit, audioMuted, onToggleAudio }) {
 // ═══════════════════════════════════════════════════════════
 
 const TWEAK_DEFAULTS = { "theme": "navy" };
+const data = JSON.parse(document.getElementById('lando-data').textContent);
 
 function App() {
-  const data = JSON.parse(document.getElementById('lando-data').textContent);
   const [mode, setMode] = React.useState('hub');
   const [focusedClip, setFocusedClip] = React.useState(null);
   const [tweaks, setTweak] = useTweaks(TWEAK_DEFAULTS);
