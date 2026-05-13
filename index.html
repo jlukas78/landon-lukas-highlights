@@ -302,8 +302,8 @@
     { "id": "cut-bucket",   "label": "NICE CUT",        "tag": "OFF-BALL",    "src": "assets/clip-cut-bucket.mp4",   "context": "READS THE GAP",              "stat": "2 PTS" },
     { "id": "assist",       "label": "DIME",            "tag": "PASSING",     "src": "assets/clip-assist.mp4",       "context": "PG VISION",                  "stat": "+1 ASSIST" },
     { "id": "fts",          "label": "ICE COLD",        "tag": "FREE THROWS", "src": "assets/clip-fts.mp4",          "context": "2-OF-2 FROM THE STRIPE",     "stat": "2 PTS" },
-    { "id": "tough-finish", "label": "TOUGH FINISH",    "tag": "FINISH",      "src": "assets/clip-tough-finish.mp4", "context": "DRIVES BASELINE · CONVERTS AT RIM", "stat": "2 PTS" },
-    { "id": "fast-break",   "label": "FAST BREAK",      "tag": "OFFENSE",     "src": "assets/clip-fast-break.mp4",   "context": "LEADS THE CHARGE UP COURT",  "stat": "PUSH" },
+    { "id": "tough-finish", "label": "BASELINE MIDRANGE", "tag": "FINISH",      "src": "assets/clip-tough-finish.mp4", "context": "DRIVES BASELINE · CONVERTS AT RIM", "stat": "2 PTS" },
+    { "id": "fast-break",   "label": "PAINT TOUCH ASSIST", "tag": "OFFENSE",     "src": "assets/clip-fast-break.mp4",   "context": "LEADS THE CHARGE UP COURT",  "stat": "PUSH" },
     { "id": "transition",   "label": "TRANSITION",      "tag": "TWO-WAY",     "src": "assets/clip-transition.mp4",   "context": "DEFENSE INTO OFFENSE",       "stat": "2 PTS" }
   ],
   "posters": ["assets/poster-1.png","assets/poster-2.png","assets/poster-3.png","assets/poster-4.png"],
@@ -637,7 +637,7 @@ function HubView({ data, onPlayAll, onPlayClip }) {
           <div className="cta-row">
             <button className="cta-btn-primary" onClick={onPlayAll}>
               <span style={{width:0,height:0,borderLeft:'12px solid #0a0a0a',borderTop:'8px solid transparent',borderBottom:'8px solid transparent'}}/>
-              PLAY ALL · 07 CLIPS
+              PLAY ALL · {String(data.clips.length).padStart(2,'0')} CLIPS
             </button>
             <button className="cta-btn-secondary" onClick={()=>setPoster(data.posters[0])}>VIEW POSTERS</button>
           </div>
