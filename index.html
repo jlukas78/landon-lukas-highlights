@@ -189,7 +189,7 @@
     .hub-wrap { padding: 20px 16px 60px; }
     .hub-header-meta { display: none; }
     .stat-strip { grid-template-columns: repeat(4, 1fr); }
-    .clips-grid { grid-template-columns: 1fr; }
+    .clips-grid { grid-template-columns: 1fr; gap: 12px; }
     .posters-grid { grid-template-columns: repeat(2, 1fr); }
     .cine-hud-top { padding: 12px 14px; gap: 6px; }
     .cine-rec-label { display: none; }
@@ -198,6 +198,13 @@
     .cine-brand-mark { right: 16px; bottom: 44px; }
     .cine-hud-btn, .cine-audio-btn { font-size: 11px; padding: 6px 10px; }
     .hub-footer { flex-direction: column; align-items: flex-start; }
+    /* ── Card overlay mobile improvements ── */
+    .card-counter { font-size: 13px !important; letter-spacing: 0.18em !important; }
+    .card-tag     { font-size: 13px !important; padding: 6px 14px !important; }
+    .card-label   { font-size: 30px !important; line-height: 0.95 !important; }
+    .card-context { font-size: 11px !important; margin-top: 6px !important; opacity: 0.85; }
+    .card-play-btn { opacity: 1 !important; transform: scale(1) !important; }
+    .hero-poster-inner { min-height: 320px !important; }
   }
 
   /* ── SMALL MOBILE (≤ 400px) ── */
@@ -521,7 +528,9 @@ function BrushField({ opacity=0.45 }) {
 
 function ClipCard({ clip, idx, onPlay, hovered, setHovered }) {
   const videoRef = React.useRef(null);
+  const [isMobile] = React.useState(() => window.innerWidth <= 640);
   const isHover = hovered === idx;
+  const active = isMobile ? false : isHover;
   React.useEffect(() => {
     const v = videoRef.current; if (!v) return;
     if (isHover) { v.currentTime=0; v.play().catch(()=>{}); } else { v.pause(); v.currentTime=0; }
@@ -529,19 +538,17 @@ function ClipCard({ clip, idx, onPlay, hovered, setHovered }) {
   return (
     <div onMouseEnter={()=>setHovered(idx)} onMouseLeave={()=>setHovered(null)} onClick={()=>onPlay(idx)}
       className="clip-card"
-      style={{border:'1px solid',borderColor:isHover?'var(--blue-bright)':'rgba(255,255,255,0.06)',transition:'transform 220ms ease, border-color 220ms',transform:isHover?'translateY(-4px)':'translateY(0)'}}>
-      {/* Video absolutely fills JS-set card height; transform centering avoids object-fit */}
+      style={{border:'1px solid',borderColor:isHover?'var(--blue-bright)':'rgba(255,255,255,0.06)',transition:'transform 220ms ease, border-color 220ms',transform:(!isMobile&&isHover)?'translateY(-4px)':'translateY(0)'}}>
       <video ref={videoRef} src={clip.src} muted playsInline webkit-playsinline="true" preload="metadata"
-        style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',minWidth:'100%',minHeight:'100%',width:'auto',height:'auto',opacity:isHover?1:0.55,transition:'opacity 280ms',filter:isHover?'none':'saturate(0.8) contrast(1.05)'}}/>
-      {/* All overlays positioned absolutely over the video */}
-      <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:isHover?'linear-gradient(180deg,rgba(5,8,15,0)0%,rgba(5,8,15,0)50%,rgba(5,8,15,0.92)100%)':'linear-gradient(180deg,rgba(5,8,15,0.5)0%,rgba(16,35,65,0.4)50%,rgba(5,8,15,0.95)100%)',pointerEvents:'none'}}/>
-      <div className="mono" style={{position:'absolute',top:14,left:14,fontSize:11,color:'var(--gold)',letterSpacing:'0.2em'}}>PLAY · {String(idx+1).padStart(2,'0')} / {String(data.clips.length).padStart(2,'0')}</div>
-      <div className="h-cond" style={{position:'absolute',top:14,right:14,fontSize:11,fontWeight:700,letterSpacing:'0.18em',padding:'4px 10px',background:'var(--blue)',color:'#fff',clipPath:'polygon(8% 0,100% 0,92% 100%,0 100%)'}}>{clip.tag}</div>
+        style={{position:'absolute',top:'50%',left:'50%',transform:'translate(-50%,-50%)',minWidth:'100%',minHeight:'100%',width:'auto',height:'auto',opacity:active?1:(isMobile?0.82:0.55),transition:'opacity 280ms',filter:active?'none':'saturate(0.8) contrast(1.05)'}}/>
+      <div style={{position:'absolute',top:0,left:0,right:0,bottom:0,background:active?'linear-gradient(180deg,rgba(5,8,15,0)0%,rgba(5,8,15,0)50%,rgba(5,8,15,0.92)100%)':(isMobile?'linear-gradient(180deg,rgba(5,8,15,0.2)0%,rgba(5,8,15,0)40%,rgba(5,8,15,0.96)100%)':'linear-gradient(180deg,rgba(5,8,15,0.5)0%,rgba(16,35,65,0.4)50%,rgba(5,8,15,0.95)100%)'),pointerEvents:'none'}}/>
+      <div className="mono card-counter" style={{position:'absolute',top:14,left:14,fontSize:11,color:'var(--gold)',letterSpacing:'0.2em'}}>PLAY · {String(idx+1).padStart(2,'0')} / {String(data.clips.length).padStart(2,'0')}</div>
+      <div className="h-cond card-tag" style={{position:'absolute',top:14,right:14,fontSize:11,fontWeight:700,letterSpacing:'0.18em',padding:'4px 10px',background:'var(--blue)',color:'#fff',clipPath:'polygon(8% 0,100% 0,92% 100%,0 100%)'}}>{clip.tag}</div>
       <div style={{position:'absolute',left:16,right:16,bottom:14}}>
-        <div className="h-display" style={{fontSize:'clamp(22px,3.5vw,30px)',lineHeight:1,color:'#fff',letterSpacing:'0.02em',textShadow:'0 2px 10px rgba(0,0,0,0.6)'}}>{clip.label}</div>
-        <div className="mono" style={{marginTop:4,fontSize:10,color:'var(--ink)',letterSpacing:'0.18em'}}>{clip.context}</div>
+        <div className="h-display card-label" style={{fontSize:'clamp(22px,3.5vw,30px)',lineHeight:1,color:'#fff',letterSpacing:'0.02em',textShadow:'0 2px 12px rgba(0,0,0,0.8)'}}>{clip.label}</div>
+        <div className="mono card-context" style={{marginTop:4,fontSize:10,color:'var(--ink)',letterSpacing:'0.18em'}}>{clip.context}</div>
       </div>
-      <div style={{position:'absolute',right:16,bottom:56,width:38,height:38,borderRadius:'50%',background:'var(--gold)',display:'grid',placeItems:'center',opacity:isHover?1:0,transform:isHover?'scale(1)':'scale(0.7)',transition:'all 240ms'}}>
+      <div className="card-play-btn" style={{position:'absolute',right:16,bottom:56,width:38,height:38,borderRadius:'50%',background:'var(--gold)',display:'grid',placeItems:'center',opacity:isHover?1:0,transform:isHover?'scale(1)':'scale(0.7)',transition:'all 240ms'}}>
         <div style={{width:0,height:0,borderLeft:'11px solid #0a0a0a',borderTop:'7px solid transparent',borderBottom:'7px solid transparent',marginLeft:3}}/>
       </div>
     </div>
@@ -580,9 +587,10 @@ function HubView({ data, onPlayAll, onPlayClip }) {
     const setHeights = () => {
       const grid = clipsGridRef.current;
       if (!grid) return;
+      const ratio = window.innerWidth <= 640 ? 0.5625 : 0.625; // 16:9 mobile, 16:10 desktop
       grid.querySelectorAll('.clip-card').forEach(card => {
         const w = card.offsetWidth;
-        if (w > 0) card.style.height = Math.round(w * 0.625) + 'px'; // 16:10
+        if (w > 0) card.style.height = Math.round(w * ratio) + 'px';
       });
     };
     setHeights();
