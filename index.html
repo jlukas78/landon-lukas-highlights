@@ -15,8 +15,8 @@
     --bone: #ece6d6; --white: #ffffff; --ink: #c9d4e6; --ink-dim: #6b7a92;
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html, body { height: 100%; }
-  body { background: var(--navy-0); color: var(--white); font-family: 'Barlow', system-ui, sans-serif; overflow-x: hidden; min-height: 100vh; }
+  html, body { height: 100%; overflow-x: hidden; }
+  body { background: var(--navy-0); color: var(--white); font-family: 'Barlow', system-ui, sans-serif; min-height: 100vh; }
   #root { min-height: 100vh; }
   .h-display { font-family: 'Bebas Neue', 'Barlow Condensed', sans-serif; letter-spacing: 0.01em; }
   .h-cond    { font-family: 'Barlow Condensed', sans-serif; }
@@ -186,7 +186,9 @@
 
   /* ── MOBILE (≤ 640px) ── */
   @media (max-width: 640px) {
-    .hub-wrap { padding: 20px 16px 60px; }
+    .hub-wrap { padding: 20px 16px 60px; overflow: hidden; }
+    .hero-grid { overflow: hidden; }
+    .hero-right > div:first-child { display: none; }
     .hub-header-meta { display: none; }
     .stat-strip { grid-template-columns: repeat(4, 1fr); }
     .clips-grid { grid-template-columns: 1fr; gap: 12px; }
@@ -247,6 +249,10 @@
     overflow: hidden;
     background: var(--navy-1);
     touch-action: manipulation;
+    /* Force GPU layer so overflow:hidden clips <video> correctly on iOS */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    border-radius: 1px;
   }
 
   /* HUD bars inset for notch / home-indicator safe areas */
